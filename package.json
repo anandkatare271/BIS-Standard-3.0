@@ -10,9 +10,14 @@
     "start": "node server/index.js",
     "server:watch": "node --watch --watch-path=server --watch-path=shared server/index.js",
     "seed": "node scripts/seed-db.mjs",
+    "test": "node --test",
     "smoke": "node scripts/smoke-render.mjs",
+    "check": "npm run test && npm run smoke",
     "build": "vite build",
     "preview": "vite preview"
+  },
+  "engines": {
+    "node": ">=22.5.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
