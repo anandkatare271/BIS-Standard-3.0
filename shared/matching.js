@@ -91,10 +91,11 @@ export const SCENARIOS = {
       { id: "SL05", tier: "Normative", relevance: 80, reasons: ["Electrical construction safety is a normative reference of the primary standards", "Required for outdoor installation safety"] },
       { id: "SL03", tier: "Test", relevance: 75, reasons: ["Test method for photometric/thermal performance verification", "Referenced as the acceptance-test standard for LED luminaires"] },
       { id: "SL09", tier: "Installation", relevance: 70, reasons: ["Mounting-pole requirement for street-lighting installation", "Relevant to outdoor deployment of the fixture"] },
+      { id: "SL10", tier: "Normative", relevance: 68, reasons: ["Ingress-protection rating is required for any weather-exposed fixture", "Referenced as the IP Code standard by the luminaire standards above"] },
       { id: "SL08", tier: "Normative", relevance: 62, reasons: ["Common terminology reference across lighting standards"] },
     ],
     missing: [
-      "Outdoor ingress/weather-protection rating (IP Code) not specified — consider IS/IEC 60529",
+      "Required IP rating not stated in the query — IS/IEC 60529 is included above, but the tender must name the target IP class",
       "Battery backup duration / performance criteria not specified",
       "Photometric test-report requirement not specified in the draft query",
       "Electrical safety type-test certificate requirement not specified",

@@ -41,10 +41,14 @@ const DEMO_QUERIES = {
     query: "Procure 500 nos solar LED street lights for rural roads",
     product: "Solar-Powered LED Street Light",
     quantity: "500",
+    // SL10 (IS/IEC 60529, the IP Code) was added deliberately during the catalog
+    // expansion: it sat in the catalog unrecommended while the scenario's own
+    // "missing" list told the user to go and consider it.
     recommendations: [
       ["SL06", "Primary", 96], ["SL02", "Primary", 94], ["SL04", "Primary", 91],
       ["SL01", "Allied", 88], ["SL07", "Allied", 85], ["SL05", "Normative", 80],
-      ["SL03", "Test", 75], ["SL09", "Installation", 70], ["SL08", "Normative", 62],
+      ["SL03", "Test", 75], ["SL09", "Installation", 70], ["SL10", "Normative", 68],
+      ["SL08", "Normative", 62],
     ],
   },
   tank: {

@@ -28,9 +28,12 @@
         "SL03"
       ],
       "safety": [
-        "SL05"
+        "SL05",
+        "SW05"
       ],
-      "installation": [],
+      "installation": [
+        "CB06"
+      ],
       "material": []
     },
     "certification": {
@@ -38,7 +41,9 @@
       "scheme": "BIS Compulsory Registration (Electronics & IT Goods)",
       "reason": "Certain luminaire categories are notified under CRS depending on classification.",
       "action": "Verify current CRS notification for the exact product category."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL02",
@@ -67,7 +72,8 @@
         "SL03"
       ],
       "safety": [
-        "SL05"
+        "SL05",
+        "SL10"
       ],
       "installation": [],
       "material": []
@@ -77,7 +83,9 @@
       "scheme": "BIS Compulsory Registration (CRS)",
       "reason": "LED lighting products are commonly notified under the CRS scheme.",
       "action": "Confirm against the latest CRS product list before publishing the tender."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL03",
@@ -107,7 +115,9 @@
       "scheme": "—",
       "reason": "Test-method standard; not independently certifiable.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL04",
@@ -134,7 +144,8 @@
         "SL03"
       ],
       "safety": [
-        "SL05"
+        "SL05",
+        "SL10"
       ],
       "installation": [
         "SL09"
@@ -146,7 +157,9 @@
       "scheme": "BIS CRS",
       "reason": "Falls within the same product family typically covered by CRS.",
       "action": "Verify applicability before finalising tender documents."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL05",
@@ -165,13 +178,23 @@
       "luminaire",
       "safety"
     ],
-    "relations": {},
+    "relations": {
+      "normative": [
+        "CB06"
+      ],
+      "safety": [
+        "SW05",
+        "SW02"
+      ]
+    },
     "certification": {
       "status": "Not Applicable",
       "scheme": "—",
       "reason": "Safety construction standard; assessed as part of the parent product certification.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL06",
@@ -194,7 +217,9 @@
     ],
     "relations": {
       "normative": [
-        "SL01"
+        "SL01",
+        "PV01",
+        "PV04"
       ],
       "test": [
         "SL03"
@@ -203,7 +228,8 @@
         "SL05"
       ],
       "installation": [
-        "SL09"
+        "SL09",
+        "SW05"
       ],
       "material": [
         "SL07"
@@ -214,7 +240,9 @@
       "scheme": "MNRE Empanelment / BIS CRS",
       "reason": "Solar lighting systems may require MNRE-approved component lists in addition to BIS compliance.",
       "action": "Verify current MNRE / BIS applicability for the specific system configuration."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL07",
@@ -236,6 +264,9 @@
     "relations": {
       "safety": [
         "SL05"
+      ],
+      "material": [
+        "IT05"
       ]
     },
     "certification": {
@@ -243,7 +274,9 @@
       "scheme": "BIS CRS",
       "reason": "Battery cells for lighting applications may fall under compulsory registration.",
       "action": "Verify current applicability."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL08",
@@ -267,7 +300,9 @@
       "scheme": "—",
       "reason": "Terminology standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL09",
@@ -286,13 +321,23 @@
       "street light",
       "mounting"
     ],
-    "relations": {},
+    "relations": {
+      "material": [
+        "ST02",
+        "PT05"
+      ],
+      "installation": [
+        "SW05"
+      ]
+    },
     "certification": {
       "status": "Not Applicable",
       "scheme": "—",
       "reason": "Structural component standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "SL10",
@@ -318,7 +363,9 @@
       "scheme": "—",
       "reason": "Environmental test-method standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "WT01",
@@ -348,7 +395,11 @@
         "WT04"
       ],
       "material": [
-        "WT03"
+        "WT03",
+        "ST02"
+      ],
+      "installation": [
+        "SN06"
       ]
     },
     "certification": {
@@ -356,7 +407,9 @@
       "scheme": "BIS Product Certification (ISI Mark)",
       "reason": "Certain tank capacities/materials may fall under mandatory ISI marking.",
       "action": "Confirm the applicable QCO / ISI-mark notification for this tank category."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "WT02",
@@ -375,13 +428,19 @@
       "water quality",
       "water tank"
     ],
-    "relations": {},
+    "relations": {
+      "test": [
+        "WT04"
+      ]
+    },
     "certification": {
       "status": "Not Applicable",
       "scheme": "—",
       "reason": "Water-quality standard, not a product certification.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "WT03",
@@ -400,13 +459,19 @@
       "steel",
       "tank"
     ],
-    "relations": {},
+    "relations": {
+      "material": [
+        "PP04"
+      ]
+    },
     "certification": {
       "status": "Not Applicable",
       "scheme": "—",
       "reason": "Material coating standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "WT04",
@@ -430,7 +495,9 @@
       "scheme": "—",
       "reason": "Test-method standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "FD01",
@@ -455,6 +522,10 @@
       ],
       "test": [
         "FD03"
+      ],
+      "material": [
+        "ST02",
+        "PT05"
       ]
     },
     "certification": {
@@ -462,7 +533,9 @@
       "scheme": "Fire (Life Safety) NOC + BIS Certification",
       "reason": "Fire doors in public/educational buildings are typically subject to state fire regulations in addition to IS compliance.",
       "action": "Verify applicable state Fire NOC requirements alongside IS compliance."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "FD02",
@@ -483,6 +556,10 @@
     "relations": {
       "test": [
         "FD03"
+      ],
+      "material": [
+        "FN01",
+        "FN05"
       ]
     },
     "certification": {
@@ -490,7 +567,9 @@
       "scheme": "Fire NOC + BIS",
       "reason": "Same regulatory basis as metal fire doors.",
       "action": "Verify state fire regulation applicability."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "FD03",
@@ -514,7 +593,9 @@
       "scheme": "—",
       "reason": "Test-method standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "FD04",
@@ -538,7 +619,9 @@
       "scheme": "—",
       "reason": "Hardware component standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "PM01",
@@ -566,6 +649,13 @@
       ],
       "safety": [
         "PM03"
+      ],
+      "installation": [
+        "CB06",
+        "SW05"
+      ],
+      "material": [
+        "PP04"
       ]
     },
     "certification": {
@@ -573,7 +663,9 @@
       "scheme": "—",
       "reason": "No mandatory BIS certification scheme currently identified for this general pump category in the demo dataset.",
       "action": "Re-verify against the current QCO list for the specific pump type."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "PM02",
@@ -597,7 +689,9 @@
       "scheme": "—",
       "reason": "Test-method standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "PM03",
@@ -616,13 +710,22 @@
       "pump motor",
       "electric motor"
     ],
-    "relations": {},
+    "relations": {
+      "normative": [
+        "CB01"
+      ],
+      "safety": [
+        "SW05"
+      ]
+    },
     "certification": {
       "status": "Possibly Applicable",
       "scheme": "BIS Star Labelling",
       "reason": "Electric motors may be covered under energy-efficiency labelling requirements.",
       "action": "Verify current labelling-scheme applicability."
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   },
   {
     "id": "PM04",
@@ -640,12 +743,3658 @@
       "rotating machine",
       "electrical safety"
     ],
-    "relations": {},
+    "relations": {
+      "normative": [
+        "CB01"
+      ]
+    },
     "certification": {
       "status": "Not Applicable",
       "scheme": "—",
       "reason": "General electrical machine standard.",
       "action": "—"
-    }
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE01",
+    "number": "IS 269",
+    "title": "Ordinary Portland Cement - Specification",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2015,
+    "status": "Current",
+    "latestVersion": "IS 269:2015",
+    "amendments": [
+      "Amd 1:2019"
+    ],
+    "scope": "Composition, strength grades (33/43/53), physical and chemical requirements for ordinary Portland cement, including the merged grade specification.",
+    "keywords": [
+      "cement",
+      "opc",
+      "ordinary portland cement",
+      "portland cement",
+      "concrete",
+      "construction material",
+      "civil work",
+      "rcc"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "CE09"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Cement is a long-standing mandatory ISI-mark product under a Quality Control Order.",
+      "action": "Confirm the supplier holds a valid BIS licence for the exact grade being procured."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE02",
+    "number": "IS 8112",
+    "title": "43 Grade Ordinary Portland Cement - Specification",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2013,
+    "status": "Current",
+    "latestVersion": "IS 8112:2013",
+    "amendments": [
+      "Amd 1:2016"
+    ],
+    "scope": "Requirements for 43 grade ordinary Portland cement used in general reinforced-concrete and masonry construction.",
+    "keywords": [
+      "cement",
+      "43 grade",
+      "opc 43",
+      "ordinary portland cement",
+      "concrete",
+      "masonry"
+    ],
+    "relations": {
+      "normative": [
+        "CE01"
+      ],
+      "test": [
+        "CE09"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "43 grade OPC falls under the mandatory cement certification scheme.",
+      "action": "Verify the BIS licence number and grade on the bag marking."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE03",
+    "number": "IS 12269",
+    "title": "53 Grade Ordinary Portland Cement - Specification",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2013,
+    "status": "Current",
+    "latestVersion": "IS 12269:2013",
+    "amendments": [],
+    "scope": "Requirements for 53 grade ordinary Portland cement for high-strength structural concrete.",
+    "keywords": [
+      "cement",
+      "53 grade",
+      "opc 53",
+      "high strength cement",
+      "structural concrete",
+      "rcc"
+    ],
+    "relations": {
+      "normative": [
+        "CE01"
+      ],
+      "test": [
+        "CE09"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "53 grade OPC falls under the mandatory cement certification scheme.",
+      "action": "Verify the BIS licence number and grade on the bag marking."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE04",
+    "number": "IS 1489 (Pt 1)",
+    "title": "Portland Pozzolana Cement - Fly Ash Based",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2015,
+    "status": "Current",
+    "latestVersion": "IS 1489 (Pt 1):2015",
+    "amendments": [],
+    "scope": "Requirements for fly-ash-based Portland pozzolana cement, commonly specified for mass concrete and cost/durability optimisation.",
+    "keywords": [
+      "cement",
+      "ppc",
+      "portland pozzolana",
+      "fly ash cement",
+      "pozzolana",
+      "concrete"
+    ],
+    "relations": {
+      "normative": [
+        "CE01"
+      ],
+      "test": [
+        "CE09"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "PPC is covered by the mandatory cement certification scheme.",
+      "action": "Confirm the licence covers the fly-ash-based variant."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE05",
+    "number": "IS 456",
+    "title": "Plain and Reinforced Concrete - Code of Practice",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2000,
+    "status": "Current",
+    "latestVersion": "IS 456:2000",
+    "amendments": [
+      "Amd 1:2005",
+      "Amd 2:2007",
+      "Amd 3:2011",
+      "Amd 4:2013",
+      "Amd 5:2019"
+    ],
+    "scope": "The governing code for design and construction of plain and reinforced concrete structures, including durability, cover, mix requirements and workmanship.",
+    "keywords": [
+      "concrete",
+      "rcc",
+      "reinforced concrete",
+      "code of practice",
+      "structural design",
+      "durability",
+      "civil construction",
+      "slab",
+      "beam",
+      "column"
+    ],
+    "relations": {
+      "normative": [
+        "CE01",
+        "CE06",
+        "CE07"
+      ],
+      "test": [
+        "CE08"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "ST01"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE06",
+    "number": "IS 383",
+    "title": "Coarse and Fine Aggregate for Concrete - Specification",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2016,
+    "status": "Current",
+    "latestVersion": "IS 383:2016",
+    "amendments": [],
+    "scope": "Quality, grading and permissible deleterious content for natural and manufactured coarse and fine aggregate, including recycled aggregate provisions.",
+    "keywords": [
+      "aggregate",
+      "coarse aggregate",
+      "fine aggregate",
+      "sand",
+      "gravel",
+      "crushed stone",
+      "concrete",
+      "manufactured sand",
+      "m-sand"
+    ],
+    "relations": {
+      "normative": [
+        "CE05"
+      ],
+      "test": [
+        "CE10"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE07",
+    "number": "IS 10262",
+    "title": "Concrete Mix Proportioning - Guidelines",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2019,
+    "status": "Current",
+    "latestVersion": "IS 10262:2019",
+    "amendments": [],
+    "scope": "Procedure for proportioning concrete mixes to a target strength and workability, including trial-mix and adjustment steps.",
+    "keywords": [
+      "concrete mix",
+      "mix design",
+      "mix proportioning",
+      "grade of concrete",
+      "workability",
+      "slump",
+      "m25",
+      "m30"
+    ],
+    "relations": {
+      "normative": [
+        "CE01",
+        "CE06"
+      ],
+      "test": [
+        "CE08"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE08",
+    "number": "IS 516",
+    "title": "Methods of Tests for Strength of Concrete",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 2021,
+    "status": "Current",
+    "latestVersion": "IS 516 (Pt 1/Sec 1):2021",
+    "amendments": [],
+    "scope": "Sampling, curing and testing procedures for compressive, flexural and split-tensile strength of concrete specimens.",
+    "keywords": [
+      "concrete test",
+      "compressive strength",
+      "cube test",
+      "flexural strength",
+      "acceptance test",
+      "quality control"
+    ],
+    "relations": {
+      "normative": [
+        "CE05"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE09",
+    "number": "IS 4031 (Pt 1)",
+    "title": "Methods of Physical Tests for Hydraulic Cement",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 1996,
+    "status": "Current",
+    "latestVersion": "IS 4031 (Pt 1):1996",
+    "amendments": [],
+    "scope": "Determination of fineness, setting time, soundness and compressive strength of hydraulic cement.",
+    "keywords": [
+      "cement test",
+      "fineness",
+      "setting time",
+      "soundness",
+      "cement testing",
+      "physical test"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CE10",
+    "number": "IS 2386 (Pt 1)",
+    "title": "Methods of Test for Aggregates for Concrete - Particle Size and Shape",
+    "category": "Cement & Concrete",
+    "domain": "Civil & Structural",
+    "year": 1963,
+    "status": "Current",
+    "latestVersion": "IS 2386 (Pt 1):1963",
+    "amendments": [
+      "Amd 1:1997"
+    ],
+    "scope": "Sieve analysis, flakiness and elongation index determination for concrete aggregate.",
+    "keywords": [
+      "aggregate test",
+      "sieve analysis",
+      "grading",
+      "flakiness index",
+      "particle size"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST01",
+    "number": "IS 1786",
+    "title": "High Strength Deformed Steel Bars and Wires for Concrete Reinforcement",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 2008,
+    "status": "Current",
+    "latestVersion": "IS 1786:2008",
+    "amendments": [
+      "Amd 1:2012",
+      "Amd 2:2019"
+    ],
+    "scope": "Grades Fe 415 to Fe 600 deformed reinforcement bars: chemical composition, mechanical properties, rib geometry and bend requirements.",
+    "keywords": [
+      "steel",
+      "rebar",
+      "reinforcement",
+      "tmt bar",
+      "deformed bar",
+      "fe 500",
+      "fe 415",
+      "fe 550",
+      "reinforcing steel",
+      "tor steel"
+    ],
+    "relations": {
+      "normative": [
+        "CE05"
+      ],
+      "test": [
+        "ST05"
+      ],
+      "safety": [],
+      "installation": [
+        "ST06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Reinforcement bars are notified under a Quality Control Order requiring ISI marking.",
+      "action": "Verify the BIS licence and the grade marking rolled onto the bar."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST02",
+    "number": "IS 2062",
+    "title": "Hot Rolled Medium and High Tensile Structural Steel",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 2011,
+    "status": "Current",
+    "latestVersion": "IS 2062:2011",
+    "amendments": [
+      "Amd 1:2019"
+    ],
+    "scope": "Grades E250 to E650 structural steel plates, sections and flats for general structural and fabrication use.",
+    "keywords": [
+      "structural steel",
+      "steel plate",
+      "steel section",
+      "angle",
+      "channel",
+      "beam",
+      "e250",
+      "mild steel",
+      "fabrication"
+    ],
+    "relations": {
+      "normative": [
+        "ST04"
+      ],
+      "test": [
+        "ST05"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Certain structural steel grades are notified under Quality Control Orders.",
+      "action": "Confirm the applicable QCO for the specific grade and product form."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST03",
+    "number": "IS 432 (Pt 1)",
+    "title": "Mild Steel and Medium Tensile Steel Bars for Concrete Reinforcement",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 1982,
+    "status": "Under Revision",
+    "latestVersion": "IS 432 (Pt 1):1982",
+    "amendments": [],
+    "scope": "Plain round mild steel and medium tensile bars for reinforcement, largely superseded for main reinforcement by IS 1786.",
+    "keywords": [
+      "mild steel bar",
+      "plain bar",
+      "reinforcement",
+      "ms bar",
+      "stirrup"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "ST05"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST04",
+    "number": "IS 800",
+    "title": "General Construction in Steel - Code of Practice",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 2007,
+    "status": "Current",
+    "latestVersion": "IS 800:2007",
+    "amendments": [],
+    "scope": "Limit state design code for steel structures, covering members, connections, stability and fabrication tolerances.",
+    "keywords": [
+      "steel structure",
+      "steel design",
+      "code of practice",
+      "limit state",
+      "truss",
+      "steel building",
+      "connection design"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "ST02"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST05",
+    "number": "IS 1608 (Pt 1)",
+    "title": "Metallic Materials - Tensile Testing at Ambient Temperature",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 2022,
+    "status": "Current",
+    "latestVersion": "IS 1608 (Pt 1):2022",
+    "amendments": [],
+    "scope": "Tensile test method establishing yield strength, tensile strength and elongation for metallic products.",
+    "keywords": [
+      "tensile test",
+      "yield strength",
+      "elongation",
+      "steel test",
+      "mechanical test",
+      "test certificate"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST06",
+    "number": "IS 2751",
+    "title": "Welding of Mild Steel Bars Used for Reinforced Concrete - Recommended Practice",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 1979,
+    "status": "Current",
+    "latestVersion": "IS 2751:1979",
+    "amendments": [
+      "Amd 1:1997"
+    ],
+    "scope": "Recommended practice, joint preparation and acceptance criteria for welding reinforcement bars on site.",
+    "keywords": [
+      "welding",
+      "rebar welding",
+      "lap joint",
+      "reinforcement joint",
+      "site welding"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "ST01"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "ST07",
+    "number": "IS 1367 (Pt 3)",
+    "title": "Threaded Steel Fasteners - Mechanical Properties of Bolts, Screws and Studs",
+    "category": "Structural Steel",
+    "domain": "Civil & Structural",
+    "year": 2017,
+    "status": "Current",
+    "latestVersion": "IS 1367 (Pt 3):2017",
+    "amendments": [],
+    "scope": "Property classes, proof loads and marking for threaded steel fasteners used in structural and general assembly.",
+    "keywords": [
+      "bolt",
+      "nut",
+      "fastener",
+      "screw",
+      "stud",
+      "property class",
+      "grade 8.8",
+      "anchor bolt"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "ST05"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "MS01",
+    "number": "IS 1077",
+    "title": "Common Burnt Clay Building Bricks - Specification",
+    "category": "Masonry & Bricks",
+    "domain": "Civil & Structural",
+    "year": 1992,
+    "status": "Current",
+    "latestVersion": "IS 1077:1992",
+    "amendments": [
+      "Amd 1:2002",
+      "Amd 2:2007"
+    ],
+    "scope": "Classification by compressive strength, dimensional tolerance, efflorescence and water absorption limits for common burnt clay bricks.",
+    "keywords": [
+      "brick",
+      "clay brick",
+      "burnt clay brick",
+      "masonry",
+      "building brick",
+      "brickwork",
+      "wall"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "MS03"
+      ],
+      "safety": [],
+      "installation": [
+        "MS04"
+      ],
+      "material": [
+        "MS05"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "MS02",
+    "number": "IS 2185 (Pt 1)",
+    "title": "Concrete Masonry Units - Hollow and Solid Concrete Blocks",
+    "category": "Masonry & Bricks",
+    "domain": "Civil & Structural",
+    "year": 2005,
+    "status": "Current",
+    "latestVersion": "IS 2185 (Pt 1):2005",
+    "amendments": [],
+    "scope": "Dimensions, density classes, strength and absorption requirements for hollow and solid load-bearing concrete blocks.",
+    "keywords": [
+      "concrete block",
+      "hollow block",
+      "solid block",
+      "masonry unit",
+      "cement block",
+      "aac block",
+      "block work"
+    ],
+    "relations": {
+      "normative": [
+        "CE01"
+      ],
+      "test": [
+        "MS03"
+      ],
+      "safety": [],
+      "installation": [
+        "MS04"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "MS03",
+    "number": "IS 3495 (Pt 1)",
+    "title": "Methods of Tests of Burnt Clay Building Bricks - Compressive Strength",
+    "category": "Masonry & Bricks",
+    "domain": "Civil & Structural",
+    "year": 1992,
+    "status": "Current",
+    "latestVersion": "IS 3495 (Pt 1):1992",
+    "amendments": [
+      "Amd 1:2002"
+    ],
+    "scope": "Test procedure for determining compressive strength, water absorption and efflorescence of building bricks.",
+    "keywords": [
+      "brick test",
+      "compressive strength",
+      "water absorption",
+      "efflorescence",
+      "masonry test"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "MS04",
+    "number": "IS 2212",
+    "title": "Brickwork - Code of Practice",
+    "category": "Masonry & Bricks",
+    "domain": "Civil & Structural",
+    "year": 1991,
+    "status": "Current",
+    "latestVersion": "IS 2212:1991",
+    "amendments": [],
+    "scope": "Workmanship, bonding, joint thickness, curing and tolerance requirements for brick masonry construction.",
+    "keywords": [
+      "brickwork",
+      "masonry work",
+      "bond",
+      "mortar joint",
+      "workmanship",
+      "wall construction"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "MS01",
+        "MS05"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "MS05",
+    "number": "IS 2250",
+    "title": "Preparation and Use of Masonry Mortars - Code of Practice",
+    "category": "Masonry & Bricks",
+    "domain": "Civil & Structural",
+    "year": 1981,
+    "status": "Current",
+    "latestVersion": "IS 2250:1981",
+    "amendments": [
+      "Amd 1:1995"
+    ],
+    "scope": "Mix proportions, preparation, consistency and use of cement, lime and composite masonry mortars.",
+    "keywords": [
+      "mortar",
+      "masonry mortar",
+      "cement mortar",
+      "lime mortar",
+      "plaster",
+      "mix proportion"
+    ],
+    "relations": {
+      "normative": [
+        "CE01"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "RD01",
+    "number": "IS 73",
+    "title": "Paving Bitumen - Specification",
+    "category": "Roads & Bitumen",
+    "domain": "Transport Infrastructure",
+    "year": 2013,
+    "status": "Current",
+    "latestVersion": "IS 73:2013",
+    "amendments": [],
+    "scope": "Viscosity-graded paving bitumen requirements for bituminous road construction, including penetration and softening point limits.",
+    "keywords": [
+      "bitumen",
+      "paving bitumen",
+      "asphalt",
+      "road",
+      "vg 30",
+      "vg 40",
+      "bituminous",
+      "road construction",
+      "black top"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "RD03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Bitumen is covered by a Quality Control Order in certain grades.",
+      "action": "Confirm the current QCO coverage for the grade specified."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "RD02",
+    "number": "IS 8887",
+    "title": "Bitumen Emulsion for Roads - Specification",
+    "category": "Roads & Bitumen",
+    "domain": "Transport Infrastructure",
+    "year": 2018,
+    "status": "Current",
+    "latestVersion": "IS 8887:2018",
+    "amendments": [],
+    "scope": "Cationic and anionic bitumen emulsion grades for tack coat, prime coat and surface dressing.",
+    "keywords": [
+      "bitumen emulsion",
+      "emulsion",
+      "tack coat",
+      "prime coat",
+      "surface dressing",
+      "road",
+      "cold mix"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "RD03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "RD01"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "RD03",
+    "number": "IS 1203",
+    "title": "Methods for Testing Tar and Bituminous Materials - Determination of Penetration",
+    "category": "Roads & Bitumen",
+    "domain": "Transport Infrastructure",
+    "year": 2022,
+    "status": "Current",
+    "latestVersion": "IS 1203:2022",
+    "amendments": [],
+    "scope": "Penetration test method used to grade and accept bituminous binders.",
+    "keywords": [
+      "bitumen test",
+      "penetration test",
+      "softening point",
+      "binder test",
+      "road material test"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "RD04",
+    "number": "IS 15462",
+    "title": "Polymer and Rubber Modified Bitumen - Specification",
+    "category": "Roads & Bitumen",
+    "domain": "Transport Infrastructure",
+    "year": 2019,
+    "status": "Current",
+    "latestVersion": "IS 15462:2019",
+    "amendments": [],
+    "scope": "Requirements for polymer-modified and crumb-rubber-modified bitumen used on high-traffic and high-temperature pavements.",
+    "keywords": [
+      "modified bitumen",
+      "pmb",
+      "crmb",
+      "polymer modified",
+      "crumb rubber",
+      "road",
+      "high traffic pavement"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "RD03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "RD01"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "RD05",
+    "number": "IS 2720 (Pt 8)",
+    "title": "Methods of Test for Soils - Water Content and Dry Density Relation",
+    "category": "Roads & Bitumen",
+    "domain": "Transport Infrastructure",
+    "year": 1983,
+    "status": "Current",
+    "latestVersion": "IS 2720 (Pt 8):1983",
+    "amendments": [
+      "Amd 1:1997"
+    ],
+    "scope": "Heavy compaction (modified Proctor) test establishing optimum moisture content and maximum dry density for subgrade and embankment control.",
+    "keywords": [
+      "soil test",
+      "compaction",
+      "proctor test",
+      "dry density",
+      "subgrade",
+      "embankment",
+      "earthwork"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PT01",
+    "number": "IS 2932",
+    "title": "Enamel, Synthetic, Exterior - Specification",
+    "category": "Paints & Coatings",
+    "domain": "Finishes & Protection",
+    "year": 2003,
+    "status": "Current",
+    "latestVersion": "IS 2932:2003",
+    "amendments": [
+      "Amd 1:2010"
+    ],
+    "scope": "Requirements for exterior-grade synthetic enamel paint including drying time, gloss, opacity and durability.",
+    "keywords": [
+      "paint",
+      "enamel",
+      "synthetic enamel",
+      "exterior paint",
+      "gloss paint",
+      "finish",
+      "painting work"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "PT03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "PT05"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PT02",
+    "number": "IS 15489",
+    "title": "Plastic Emulsion Paint - Specification",
+    "category": "Paints & Coatings",
+    "domain": "Finishes & Protection",
+    "year": 2013,
+    "status": "Current",
+    "latestVersion": "IS 15489:2013",
+    "amendments": [],
+    "scope": "Interior and exterior acrylic plastic emulsion paint requirements including scrub resistance and opacity.",
+    "keywords": [
+      "paint",
+      "emulsion paint",
+      "plastic emulsion",
+      "acrylic paint",
+      "interior paint",
+      "wall paint",
+      "distemper"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "PT03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PT03",
+    "number": "IS 101 (Pt 1/Sec 1)",
+    "title": "Methods of Sampling and Test for Paints, Varnishes and Related Products",
+    "category": "Paints & Coatings",
+    "domain": "Finishes & Protection",
+    "year": 1986,
+    "status": "Current",
+    "latestVersion": "IS 101 (Pt 1/Sec 1):1986",
+    "amendments": [
+      "Amd 1:1993"
+    ],
+    "scope": "Sampling procedure and general test methods for paints, varnishes, enamels and related coating products.",
+    "keywords": [
+      "paint test",
+      "sampling",
+      "varnish test",
+      "coating test",
+      "drying time",
+      "opacity"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PT04",
+    "number": "IS 2339",
+    "title": "Aluminium Paint for General Purposes - Specification",
+    "category": "Paints & Coatings",
+    "domain": "Finishes & Protection",
+    "year": 1963,
+    "status": "Current",
+    "latestVersion": "IS 2339:1963",
+    "amendments": [
+      "Amd 1:1979",
+      "Amd 2:1990"
+    ],
+    "scope": "Requirements for aluminium paint in dual-container and ready-mixed form for heat and weather resistant finishes.",
+    "keywords": [
+      "aluminium paint",
+      "metallic paint",
+      "heat resistant paint",
+      "silver paint",
+      "protective coating"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "PT03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PT05",
+    "number": "IS 2074",
+    "title": "Ready Mixed Paint, Air Drying, Red Oxide-Zinc Chrome, Priming",
+    "category": "Paints & Coatings",
+    "domain": "Finishes & Protection",
+    "year": 1992,
+    "status": "Current",
+    "latestVersion": "IS 2074:1992",
+    "amendments": [
+      "Amd 1:1997"
+    ],
+    "scope": "Anti-corrosive primer for ferrous surfaces prior to finish coats, used widely on structural steel and joinery.",
+    "keywords": [
+      "primer",
+      "red oxide",
+      "zinc chrome",
+      "anti corrosive",
+      "priming coat",
+      "steel primer",
+      "protective coating"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "PT03"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "ST02"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB01",
+    "number": "IS 694",
+    "title": "PVC Insulated Unsheathed and Sheathed Cables with Copper Conductor",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 2010,
+    "status": "Current",
+    "latestVersion": "IS 694:2010",
+    "amendments": [
+      "Amd 1:2016"
+    ],
+    "scope": "Single and multi-core PVC insulated cables rated up to and including 1100 V for internal building wiring and general power distribution.",
+    "keywords": [
+      "cable",
+      "wire",
+      "pvc cable",
+      "wiring",
+      "electrical wire",
+      "copper conductor",
+      "house wiring",
+      "1100 v",
+      "flexible cable"
+    ],
+    "relations": {
+      "normative": [
+        "CB04"
+      ],
+      "test": [
+        "CB07"
+      ],
+      "safety": [],
+      "installation": [
+        "CB06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Electric cables and wires are notified under a Quality Control Order requiring ISI marking.",
+      "action": "Verify the BIS licence covers the exact conductor size and core count procured."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB02",
+    "number": "IS 1554 (Pt 1)",
+    "title": "PVC Insulated Heavy Duty Electric Cables up to 1100 V",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 1988,
+    "status": "Current",
+    "latestVersion": "IS 1554 (Pt 1):1988",
+    "amendments": [
+      "Amd 1:1996",
+      "Amd 2:2003"
+    ],
+    "scope": "Armoured and unarmoured heavy duty power cables for underground and industrial distribution up to 1100 V.",
+    "keywords": [
+      "power cable",
+      "armoured cable",
+      "heavy duty cable",
+      "underground cable",
+      "lt cable",
+      "distribution cable",
+      "xlpe"
+    ],
+    "relations": {
+      "normative": [
+        "CB04",
+        "CB05"
+      ],
+      "test": [
+        "CB07"
+      ],
+      "safety": [],
+      "installation": [
+        "CB06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Heavy duty PVC power cables fall under the cable Quality Control Order.",
+      "action": "Confirm armouring type and voltage grade against the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB03",
+    "number": "IS 7098 (Pt 1)",
+    "title": "Cross-Linked Polyethylene Insulated PVC Sheathed Cables up to 1100 V",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 1988,
+    "status": "Current",
+    "latestVersion": "IS 7098 (Pt 1):1988",
+    "amendments": [
+      "Amd 1:2000"
+    ],
+    "scope": "XLPE insulated cables offering higher continuous conductor temperature and current rating than equivalent PVC cables.",
+    "keywords": [
+      "xlpe cable",
+      "cross linked polyethylene",
+      "power cable",
+      "lt cable",
+      "armoured cable",
+      "underground cable"
+    ],
+    "relations": {
+      "normative": [
+        "CB04",
+        "CB05"
+      ],
+      "test": [
+        "CB07"
+      ],
+      "safety": [],
+      "installation": [
+        "CB06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "XLPE cables are covered by the cable Quality Control Order.",
+      "action": "Confirm the voltage grade and conductor material on the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB04",
+    "number": "IS 8130",
+    "title": "Conductors for Insulated Electric Cables and Flexible Cords",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 1984,
+    "status": "Current",
+    "latestVersion": "IS 8130:1984",
+    "amendments": [
+      "Amd 1:1995",
+      "Amd 2:2003"
+    ],
+    "scope": "Conductor classes, nominal cross-sectional areas, resistance limits and stranding for copper and aluminium cable conductors.",
+    "keywords": [
+      "conductor",
+      "copper conductor",
+      "aluminium conductor",
+      "stranding",
+      "cross section",
+      "conductor resistance",
+      "cable"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "CB07"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB05",
+    "number": "IS 3961 (Pt 5)",
+    "title": "Recommended Current Ratings for Cables - PVC Insulated Light Duty Cables",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 1968,
+    "status": "Current",
+    "latestVersion": "IS 3961 (Pt 5):1968",
+    "amendments": [],
+    "scope": "Current-carrying capacity and derating factors for PVC insulated cables under various installation and ambient conditions.",
+    "keywords": [
+      "current rating",
+      "derating",
+      "cable sizing",
+      "ampacity",
+      "cable capacity",
+      "load current"
+    ],
+    "relations": {
+      "normative": [
+        "CB01"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB06",
+    "number": "IS 732",
+    "title": "Code of Practice for Electrical Wiring Installations",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 2019,
+    "status": "Current",
+    "latestVersion": "IS 732:2019",
+    "amendments": [],
+    "scope": "Design, selection, erection and verification requirements for low voltage electrical installations in buildings.",
+    "keywords": [
+      "wiring installation",
+      "electrical installation",
+      "code of practice",
+      "distribution board",
+      "conduit",
+      "wiring",
+      "electrical safety",
+      "internal wiring"
+    ],
+    "relations": {
+      "normative": [
+        "CB01",
+        "SW05"
+      ],
+      "test": [],
+      "safety": [
+        "SW01",
+        "SW02",
+        "SW05"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "CB07",
+    "number": "IS 10810 (Pt 1)",
+    "title": "Methods of Test for Cables",
+    "category": "Cables & Wiring",
+    "domain": "Electrical & Power",
+    "year": 1984,
+    "status": "Current",
+    "latestVersion": "IS 10810 (Pt 1):1984",
+    "amendments": [],
+    "scope": "Standard test methods for electrical, mechanical and thermal acceptance testing of insulated cables.",
+    "keywords": [
+      "cable test",
+      "insulation resistance",
+      "high voltage test",
+      "conductor resistance",
+      "type test",
+      "acceptance test"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SW01",
+    "number": "IS/IEC 60898-1",
+    "title": "Circuit Breakers for Overcurrent Protection for Household and Similar Installations",
+    "category": "Switchgear & Protection",
+    "domain": "Electrical & Power",
+    "year": 2015,
+    "status": "Current",
+    "latestVersion": "IS/IEC 60898-1:2015",
+    "amendments": [],
+    "scope": "Miniature circuit breaker requirements including rated current, breaking capacity and tripping characteristics (B, C and D curves).",
+    "keywords": [
+      "mcb",
+      "circuit breaker",
+      "miniature circuit breaker",
+      "overcurrent protection",
+      "breaker",
+      "distribution board",
+      "electrical protection"
+    ],
+    "relations": {
+      "normative": [
+        "SW03"
+      ],
+      "test": [],
+      "safety": [
+        "CB06"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Miniature circuit breakers are notified under a Quality Control Order.",
+      "action": "Verify the ISI licence covers the breaking capacity and curve type specified."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SW02",
+    "number": "IS 12640 (Pt 1)",
+    "title": "Residual Current Operated Circuit Breakers for Household and Similar Uses",
+    "category": "Switchgear & Protection",
+    "domain": "Electrical & Power",
+    "year": 2016,
+    "status": "Current",
+    "latestVersion": "IS 12640 (Pt 1):2016",
+    "amendments": [],
+    "scope": "RCCB and RCBO requirements for earth leakage protection, including rated residual operating current and tripping time.",
+    "keywords": [
+      "rccb",
+      "rcbo",
+      "elcb",
+      "earth leakage",
+      "residual current",
+      "shock protection",
+      "circuit breaker",
+      "electrical safety"
+    ],
+    "relations": {
+      "normative": [
+        "SW03"
+      ],
+      "test": [],
+      "safety": [
+        "CB06",
+        "SW05"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Residual current devices are notified under a Quality Control Order.",
+      "action": "Confirm the sensitivity rating (30 mA / 100 mA / 300 mA) against the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SW03",
+    "number": "IS/IEC 60947-1",
+    "title": "Low Voltage Switchgear and Controlgear - General Rules",
+    "category": "Switchgear & Protection",
+    "domain": "Electrical & Power",
+    "year": 2020,
+    "status": "Current",
+    "latestVersion": "IS/IEC 60947-1:2020",
+    "amendments": [],
+    "scope": "General definitions, service conditions, marking and type-test requirements applicable to all low voltage switchgear and controlgear.",
+    "keywords": [
+      "switchgear",
+      "controlgear",
+      "low voltage",
+      "contactor",
+      "isolator",
+      "switch disconnector",
+      "general rules"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SW04",
+    "number": "IS 8623 (Pt 1)",
+    "title": "Low Voltage Switchgear and Controlgear Assemblies - Type Tested Assemblies",
+    "category": "Switchgear & Protection",
+    "domain": "Electrical & Power",
+    "year": 1993,
+    "status": "Current",
+    "latestVersion": "IS 8623 (Pt 1):1993",
+    "amendments": [],
+    "scope": "Requirements for factory-built low voltage panel assemblies, including form of separation, temperature rise and short-circuit withstand.",
+    "keywords": [
+      "panel",
+      "switchboard",
+      "distribution panel",
+      "lt panel",
+      "mcc",
+      "control panel",
+      "assembly",
+      "switchgear"
+    ],
+    "relations": {
+      "normative": [
+        "SW03"
+      ],
+      "test": [
+        "SW06"
+      ],
+      "safety": [
+        "SW05"
+      ],
+      "installation": [],
+      "material": [
+        "CB02",
+        "SW01",
+        "SW06"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Panel assemblies are generally certified at component level rather than as an assembly.",
+      "action": "Confirm component-level ISI/CRS coverage for the breakers and meters used."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SW05",
+    "number": "IS 3043",
+    "title": "Code of Practice for Earthing",
+    "category": "Switchgear & Protection",
+    "domain": "Electrical & Power",
+    "year": 2018,
+    "status": "Current",
+    "latestVersion": "IS 3043:2018",
+    "amendments": [
+      "Amd 1:2021"
+    ],
+    "scope": "Design and installation of earthing systems, earth electrode selection, earth resistance limits and equipotential bonding.",
+    "keywords": [
+      "earthing",
+      "grounding",
+      "earth electrode",
+      "earth pit",
+      "bonding",
+      "earth resistance",
+      "lightning",
+      "electrical safety"
+    ],
+    "relations": {
+      "normative": [
+        "CB06"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SW06",
+    "number": "IS 13703 (Pt 1)",
+    "title": "Low Voltage Fuses for Voltages not Exceeding 1000 V AC",
+    "category": "Switchgear & Protection",
+    "domain": "Electrical & Power",
+    "year": 1993,
+    "status": "Current",
+    "latestVersion": "IS 13703 (Pt 1):1993",
+    "amendments": [],
+    "scope": "General requirements and test methods for low voltage fuse-links and fuse holders used in distribution circuits.",
+    "keywords": [
+      "fuse",
+      "fuse link",
+      "hrc fuse",
+      "fuse holder",
+      "overcurrent",
+      "protection"
+    ],
+    "relations": {
+      "normative": [
+        "SW03"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "TR01",
+    "number": "IS 2026 (Pt 1)",
+    "title": "Power Transformers - General",
+    "category": "Transformers",
+    "domain": "Electrical & Power",
+    "year": 2011,
+    "status": "Current",
+    "latestVersion": "IS 2026 (Pt 1):2011",
+    "amendments": [],
+    "scope": "General requirements for oil-immersed and dry-type power transformers including ratings, tappings, connections and tolerances.",
+    "keywords": [
+      "transformer",
+      "power transformer",
+      "kva",
+      "oil immersed",
+      "winding",
+      "tap changer",
+      "substation"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "TR05"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "TR02",
+    "number": "IS 1180 (Pt 1)",
+    "title": "Outdoor Type Three Phase Distribution Transformers up to and including 2500 kVA",
+    "category": "Transformers",
+    "domain": "Electrical & Power",
+    "year": 2014,
+    "status": "Current",
+    "latestVersion": "IS 1180 (Pt 1):2014",
+    "amendments": [],
+    "scope": "Energy-efficiency levels, losses and construction requirements for outdoor oil-immersed distribution transformers up to 2500 kVA, 33 kV class.",
+    "keywords": [
+      "distribution transformer",
+      "transformer",
+      "outdoor transformer",
+      "11 kv",
+      "33 kv",
+      "kva",
+      "star rating",
+      "losses",
+      "substation"
+    ],
+    "relations": {
+      "normative": [
+        "TR01"
+      ],
+      "test": [],
+      "safety": [
+        "SW04"
+      ],
+      "installation": [
+        "SW05"
+      ],
+      "material": [
+        "TR05",
+        "TR04"
+      ]
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Distribution transformers up to 2500 kVA are notified under a Quality Control Order.",
+      "action": "Verify the star-rating/loss level claimed against the BIS licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "TR03",
+    "number": "IS 11171",
+    "title": "Dry Type Power Transformers",
+    "category": "Transformers",
+    "domain": "Electrical & Power",
+    "year": 1985,
+    "status": "Current",
+    "latestVersion": "IS 11171:1985",
+    "amendments": [],
+    "scope": "Requirements for dry-type transformers used where fire risk or indoor installation rules out oil-immersed units.",
+    "keywords": [
+      "dry type transformer",
+      "cast resin transformer",
+      "indoor transformer",
+      "transformer",
+      "fire safe transformer"
+    ],
+    "relations": {
+      "normative": [
+        "TR01"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "TR04",
+    "number": "IS 2099",
+    "title": "High Voltage Porcelain Bushings",
+    "category": "Transformers",
+    "domain": "Electrical & Power",
+    "year": 1986,
+    "status": "Current",
+    "latestVersion": "IS 2099:1986",
+    "amendments": [
+      "Amd 1:1994"
+    ],
+    "scope": "Dimensional, electrical and mechanical requirements for porcelain bushings used on transformers and switchgear.",
+    "keywords": [
+      "bushing",
+      "porcelain bushing",
+      "insulator",
+      "high voltage",
+      "transformer accessory"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "TR05",
+    "number": "IS 335",
+    "title": "New Insulating Oils",
+    "category": "Transformers",
+    "domain": "Electrical & Power",
+    "year": 2018,
+    "status": "Current",
+    "latestVersion": "IS 335:2018",
+    "amendments": [],
+    "scope": "Requirements for unused mineral insulating oil for transformers and switchgear, including dielectric strength and oxidation stability.",
+    "keywords": [
+      "transformer oil",
+      "insulating oil",
+      "mineral oil",
+      "dielectric strength",
+      "oil test",
+      "breakdown voltage"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Insulating oil is covered by a Quality Control Order in certain grades.",
+      "action": "Confirm current QCO applicability for the oil grade specified."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PV01",
+    "number": "IS 14286",
+    "title": "Crystalline Silicon Terrestrial Photovoltaic Modules - Design Qualification and Type Approval",
+    "category": "Solar Photovoltaic",
+    "domain": "Renewable Energy",
+    "year": 2010,
+    "status": "Current",
+    "latestVersion": "IS 14286:2010",
+    "amendments": [],
+    "scope": "Design qualification and type approval sequence for crystalline silicon PV modules, harmonised with IEC 61215.",
+    "keywords": [
+      "solar",
+      "solar panel",
+      "pv module",
+      "photovoltaic",
+      "crystalline silicon",
+      "solar module",
+      "rooftop solar",
+      "type approval",
+      "wp"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "PV03"
+      ],
+      "safety": [
+        "PV02"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS)",
+      "reason": "Solar PV modules are notified under the Compulsory Registration Scheme, and grid projects additionally require ALMM listing.",
+      "action": "Verify BIS CRS registration and, for government projects, the MNRE ALMM listing of the exact model."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PV02",
+    "number": "IS/IEC 61730 (Pt 1)",
+    "title": "Photovoltaic Module Safety Qualification - Requirements for Construction",
+    "category": "Solar Photovoltaic",
+    "domain": "Renewable Energy",
+    "year": 2004,
+    "status": "Current",
+    "latestVersion": "IS/IEC 61730 (Pt 1):2004",
+    "amendments": [],
+    "scope": "Construction requirements addressing electrical, mechanical, thermal and fire safety of PV modules.",
+    "keywords": [
+      "pv module safety",
+      "solar panel safety",
+      "photovoltaic",
+      "module construction",
+      "class ii",
+      "solar"
+    ],
+    "relations": {
+      "normative": [
+        "PV01"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS)",
+      "reason": "PV module safety qualification is part of the CRS scope for solar modules.",
+      "action": "Confirm the safety qualification report accompanies the CRS registration."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PV03",
+    "number": "IS 16221 (Pt 2)",
+    "title": "Safety of Photovoltaic Modules - Requirements for Testing",
+    "category": "Solar Photovoltaic",
+    "domain": "Renewable Energy",
+    "year": 2015,
+    "status": "Current",
+    "latestVersion": "IS 16221 (Pt 2):2015",
+    "amendments": [],
+    "scope": "Test sequence verifying the safety construction requirements for terrestrial PV modules.",
+    "keywords": [
+      "pv module test",
+      "solar panel test",
+      "safety test",
+      "photovoltaic",
+      "module qualification",
+      "solar"
+    ],
+    "relations": {
+      "normative": [
+        "PV02"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PV04",
+    "number": "IS/IEC 62109 (Pt 1)",
+    "title": "Safety of Power Converters for Use in Photovoltaic Power Systems - General Requirements",
+    "category": "Solar Photovoltaic",
+    "domain": "Renewable Energy",
+    "year": 2010,
+    "status": "Current",
+    "latestVersion": "IS/IEC 62109 (Pt 1):2010",
+    "amendments": [],
+    "scope": "General safety requirements for PV inverters and power conditioning units, including protection against electric shock and thermal hazards.",
+    "keywords": [
+      "inverter",
+      "solar inverter",
+      "pcu",
+      "power conditioning unit",
+      "power converter",
+      "photovoltaic",
+      "grid tie",
+      "mppt",
+      "solar"
+    ],
+    "relations": {
+      "normative": [
+        "SW04"
+      ],
+      "test": [],
+      "safety": [
+        "CB06",
+        "SW02",
+        "SW05"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS)",
+      "reason": "Solar inverters and power conditioning units are notified under the Compulsory Registration Scheme.",
+      "action": "Verify CRS registration for the exact inverter model and rating."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PV05",
+    "number": "IS 16169",
+    "title": "Thin Film Terrestrial Photovoltaic Modules - Design Qualification and Type Approval",
+    "category": "Solar Photovoltaic",
+    "domain": "Renewable Energy",
+    "year": 2014,
+    "status": "Current",
+    "latestVersion": "IS 16169:2014",
+    "amendments": [],
+    "scope": "Design qualification and type approval for thin-film PV modules, the non-crystalline alternative to IS 14286.",
+    "keywords": [
+      "thin film",
+      "pv module",
+      "photovoltaic",
+      "cdte",
+      "amorphous silicon",
+      "solar module",
+      "solar"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [
+        "PV02"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS)",
+      "reason": "Thin film PV modules fall under the same CRS notification as crystalline modules.",
+      "action": "Verify CRS registration and ALMM listing where applicable."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP01",
+    "number": "IS 4985",
+    "title": "Unplasticized PVC Pipes for Potable Water Supplies",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2000,
+    "status": "Current",
+    "latestVersion": "IS 4985:2000",
+    "amendments": [
+      "Amd 1:2006"
+    ],
+    "scope": "Dimensions, pressure classes and material requirements for uPVC pipes conveying potable water.",
+    "keywords": [
+      "pipe",
+      "pvc pipe",
+      "upvc",
+      "water pipe",
+      "potable water",
+      "water supply",
+      "plumbing",
+      "pressure class",
+      "pipeline"
+    ],
+    "relations": {
+      "normative": [
+        "WT02"
+      ],
+      "test": [
+        "WT04"
+      ],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "uPVC potable water pipes are notified under a Quality Control Order.",
+      "action": "Verify the ISI licence covers the pressure class and diameter procured."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP02",
+    "number": "IS 15778",
+    "title": "Chlorinated Polyvinyl Chloride (CPVC) Pipes for Potable Hot and Cold Water Distribution",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2007,
+    "status": "Current",
+    "latestVersion": "IS 15778:2007",
+    "amendments": [],
+    "scope": "CPVC pipe requirements for hot and cold potable water distribution inside buildings, including thermal and pressure ratings.",
+    "keywords": [
+      "cpvc",
+      "pipe",
+      "hot water pipe",
+      "plumbing",
+      "potable water",
+      "water distribution",
+      "sdr 11",
+      "internal plumbing"
+    ],
+    "relations": {
+      "normative": [
+        "WT02"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "CPVC plumbing pipes fall under plastic piping Quality Control Orders in certain classes.",
+      "action": "Confirm current QCO applicability for CPVC before tendering."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP03",
+    "number": "IS 4984",
+    "title": "High Density Polyethylene Pipes for Water Supply",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2016,
+    "status": "Current",
+    "latestVersion": "IS 4984:2016",
+    "amendments": [],
+    "scope": "HDPE pipe grades, pressure ratings and dimensional requirements for buried and surface water mains.",
+    "keywords": [
+      "hdpe pipe",
+      "pipe",
+      "polyethylene",
+      "water main",
+      "water supply",
+      "buried pipeline",
+      "pe 100",
+      "pipeline"
+    ],
+    "relations": {
+      "normative": [
+        "WT02"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "PP10"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "HDPE water supply pipes are notified under a Quality Control Order.",
+      "action": "Verify pressure rating and PE grade against the BIS licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP04",
+    "number": "IS 1239 (Pt 1)",
+    "title": "Steel Tubes, Tubulars and Other Wrought Steel Fittings - Steel Tubes",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2004,
+    "status": "Current",
+    "latestVersion": "IS 1239 (Pt 1):2004",
+    "amendments": [
+      "Amd 1:2010"
+    ],
+    "scope": "Light, medium and heavy class galvanised and black steel tubes for water, air and gas conveyance.",
+    "keywords": [
+      "gi pipe",
+      "steel tube",
+      "galvanised pipe",
+      "ms pipe",
+      "medium class",
+      "heavy class",
+      "pipe",
+      "plumbing"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "ST05"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "WT03"
+      ]
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Galvanised and black steel tubes are notified under a Quality Control Order.",
+      "action": "Confirm the class (light/medium/heavy) stated in the tender matches the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP05",
+    "number": "IS 1239 (Pt 2)",
+    "title": "Steel Tubes, Tubulars and Other Wrought Steel Fittings - Steel Pipe Fittings",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2011,
+    "status": "Current",
+    "latestVersion": "IS 1239 (Pt 2):2011",
+    "amendments": [],
+    "scope": "Screwed and socket-welded wrought steel pipe fittings matched to the tube classes of Part 1.",
+    "keywords": [
+      "pipe fitting",
+      "elbow",
+      "tee",
+      "socket",
+      "union",
+      "nipple",
+      "gi fitting",
+      "threaded fitting"
+    ],
+    "relations": {
+      "normative": [
+        "PP04"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Steel pipe fittings are covered alongside tubes in certain QCO notifications.",
+      "action": "Confirm fittings are included in the supplier BIS licence scope."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP06",
+    "number": "IS 458",
+    "title": "Precast Concrete Pipes (With and Without Reinforcement)",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2003,
+    "status": "Current",
+    "latestVersion": "IS 458:2003",
+    "amendments": [
+      "Amd 1:2006"
+    ],
+    "scope": "Classification, strength and permeability requirements for precast concrete pipes used in drainage, sewerage and irrigation.",
+    "keywords": [
+      "concrete pipe",
+      "rcc pipe",
+      "hume pipe",
+      "drainage pipe",
+      "sewer pipe",
+      "culvert",
+      "np2",
+      "np3"
+    ],
+    "relations": {
+      "normative": [
+        "CE05"
+      ],
+      "test": [
+        "CE08"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Precast concrete pipes are covered by a Quality Control Order in certain classes.",
+      "action": "Confirm the pipe class notified under the applicable QCO."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP07",
+    "number": "IS 1536",
+    "title": "Centrifugally Cast (Spun) Iron Pressure Pipes for Water, Gas and Sewage",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2001,
+    "status": "Current",
+    "latestVersion": "IS 1536:2001",
+    "amendments": [],
+    "scope": "Spun iron pressure pipe classes, wall thickness and hydrostatic test requirements for water and sewage mains.",
+    "keywords": [
+      "cast iron pipe",
+      "ci pipe",
+      "spun iron",
+      "ductile iron",
+      "pressure pipe",
+      "water main",
+      "sewage",
+      "pipeline"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "PP10"
+      ],
+      "material": [
+        "WT03"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP08",
+    "number": "IS 7834 (Pt 1)",
+    "title": "Injection Moulded PVC Socket Fittings with Solvent Cement Joints for Water Supplies",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 1987,
+    "status": "Current",
+    "latestVersion": "IS 7834 (Pt 1):1987",
+    "amendments": [],
+    "scope": "General requirements for injection moulded uPVC solvent-weld socket fittings used with IS 4985 pipes.",
+    "keywords": [
+      "pvc fitting",
+      "socket fitting",
+      "solvent cement",
+      "elbow",
+      "tee",
+      "coupler",
+      "plumbing fitting"
+    ],
+    "relations": {
+      "normative": [
+        "PP01"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "PVC fittings are covered alongside pipes in certain QCO notifications.",
+      "action": "Confirm fittings fall within the supplier BIS licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP09",
+    "number": "IS 12818",
+    "title": "Unplasticized PVC Screen and Casing Pipes for Bore and Tube Wells",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 2010,
+    "status": "Current",
+    "latestVersion": "IS 12818:2010",
+    "amendments": [],
+    "scope": "Casing and slotted screen pipe requirements for bore wells and tube wells, including collapse pressure classes.",
+    "keywords": [
+      "casing pipe",
+      "screen pipe",
+      "borewell",
+      "tubewell",
+      "bore well casing",
+      "slotted pipe",
+      "pvc pipe"
+    ],
+    "relations": {
+      "normative": [
+        "PP01"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Borewell casing pipes are covered by a Quality Control Order in certain classes.",
+      "action": "Verify the collapse pressure class against the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PP10",
+    "number": "IS 3114",
+    "title": "Code of Practice for Laying of Cast Iron Pipes",
+    "category": "Pipes & Plumbing",
+    "domain": "Water Infrastructure",
+    "year": 1994,
+    "status": "Current",
+    "latestVersion": "IS 3114:1994",
+    "amendments": [],
+    "scope": "Trenching, bedding, jointing, thrust block and testing practice for laying buried pressure pipelines.",
+    "keywords": [
+      "pipe laying",
+      "trench",
+      "bedding",
+      "jointing",
+      "thrust block",
+      "hydrostatic test",
+      "pipeline installation"
+    ],
+    "relations": {
+      "normative": [
+        "PP07"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SN01",
+    "number": "IS 2556 (Pt 2)",
+    "title": "Vitreous Sanitary Appliances (Vitreous China) - Wash Basins",
+    "category": "Sanitaryware & Fittings",
+    "domain": "Water Infrastructure",
+    "year": 1994,
+    "status": "Current",
+    "latestVersion": "IS 2556 (Pt 2):1994",
+    "amendments": [],
+    "scope": "Dimensions, finish, warpage and water absorption requirements for vitreous china wash basins.",
+    "keywords": [
+      "wash basin",
+      "sanitaryware",
+      "vitreous china",
+      "basin",
+      "toilet",
+      "sanitary appliance",
+      "wash hand basin"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Certain sanitaryware categories are covered by Quality Control Orders.",
+      "action": "Confirm the applicable QCO for the appliance type."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SN02",
+    "number": "IS 2556 (Pt 3)",
+    "title": "Vitreous Sanitary Appliances (Vitreous China) - Squatting Pans",
+    "category": "Sanitaryware & Fittings",
+    "domain": "Water Infrastructure",
+    "year": 1994,
+    "status": "Current",
+    "latestVersion": "IS 2556 (Pt 3):1994",
+    "amendments": [],
+    "scope": "Requirements for Indian-pattern squatting pans including dimensions, flushing performance and finish.",
+    "keywords": [
+      "squatting pan",
+      "indian wc",
+      "water closet",
+      "toilet pan",
+      "sanitaryware",
+      "toilet",
+      "sanitation"
+    ],
+    "relations": {
+      "normative": [
+        "SN03"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Certain sanitaryware categories are covered by Quality Control Orders.",
+      "action": "Confirm the applicable QCO for the appliance type."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SN03",
+    "number": "IS 774",
+    "title": "Flushing Cistern for Water Closets and Urinals",
+    "category": "Sanitaryware & Fittings",
+    "domain": "Water Infrastructure",
+    "year": 2004,
+    "status": "Current",
+    "latestVersion": "IS 774:2004",
+    "amendments": [],
+    "scope": "Capacity, discharge performance and material requirements for flushing cisterns, including dual-flush provisions.",
+    "keywords": [
+      "flushing cistern",
+      "flush tank",
+      "dual flush",
+      "water closet",
+      "urinal",
+      "toilet",
+      "sanitaryware"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Flushing cisterns appear in sanitaryware Quality Control Orders in certain categories.",
+      "action": "Verify the current QCO scope for cisterns."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SN04",
+    "number": "IS 781",
+    "title": "Cast Copper Alloy Screw Down Bib Taps and Stop Valves for Water Services",
+    "category": "Sanitaryware & Fittings",
+    "domain": "Water Infrastructure",
+    "year": 1984,
+    "status": "Current",
+    "latestVersion": "IS 781:1984",
+    "amendments": [
+      "Amd 1:1996"
+    ],
+    "scope": "Material, pressure rating and endurance requirements for brass bib taps and stop valves in water service lines.",
+    "keywords": [
+      "tap",
+      "bib tap",
+      "stop valve",
+      "brass tap",
+      "water tap",
+      "cock",
+      "plumbing fitting",
+      "valve"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SN05",
+    "number": "IS 8931",
+    "title": "Copper Alloy Fancy Single Taps, Combination Tap Assembly and Stop Valves",
+    "category": "Sanitaryware & Fittings",
+    "domain": "Water Infrastructure",
+    "year": 1993,
+    "status": "Current",
+    "latestVersion": "IS 8931:1993",
+    "amendments": [],
+    "scope": "Requirements for decorative and combination brass tap assemblies used with wash basins, sinks and bath fittings.",
+    "keywords": [
+      "tap",
+      "pillar tap",
+      "mixer tap",
+      "combination tap",
+      "cp fitting",
+      "bath fitting",
+      "brass fitting"
+    ],
+    "relations": {
+      "normative": [
+        "SN04"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [
+        "SN06"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "SN06",
+    "number": "IS 1172",
+    "title": "Code of Basic Requirements for Water Supply, Drainage and Sanitation",
+    "category": "Sanitaryware & Fittings",
+    "domain": "Water Infrastructure",
+    "year": 1993,
+    "status": "Current",
+    "latestVersion": "IS 1172:1993",
+    "amendments": [
+      "Amd 1:1998"
+    ],
+    "scope": "Per-capita water demand, fixture provisioning ratios and basic drainage and sanitation requirements for buildings.",
+    "keywords": [
+      "water supply",
+      "drainage",
+      "sanitation",
+      "fixture",
+      "per capita demand",
+      "plumbing design",
+      "toilet provision",
+      "code of practice"
+    ],
+    "relations": {
+      "normative": [
+        "WT02"
+      ],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE01",
+    "number": "IS 2925",
+    "title": "Industrial Safety Helmets",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 1984,
+    "status": "Current",
+    "latestVersion": "IS 2925:1984",
+    "amendments": [
+      "Amd 1:1992",
+      "Amd 2:2002"
+    ],
+    "scope": "Shock absorption, penetration resistance, flammability and electrical insulation requirements for industrial safety helmets.",
+    "keywords": [
+      "safety helmet",
+      "helmet",
+      "hard hat",
+      "head protection",
+      "ppe",
+      "safety equipment",
+      "construction safety"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Industrial safety helmets are notified under the personal protective equipment Quality Control Order.",
+      "action": "Verify the ISI licence and the marking inside the shell."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE02",
+    "number": "IS 15298 (Pt 2)",
+    "title": "Personal Protective Equipment - Safety Footwear",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 2011,
+    "status": "Current",
+    "latestVersion": "IS 15298 (Pt 2):2011",
+    "amendments": [],
+    "scope": "Toe-cap impact and compression, slip resistance and penetration resistance requirements for safety footwear.",
+    "keywords": [
+      "safety shoes",
+      "safety boots",
+      "footwear",
+      "steel toe",
+      "ppe",
+      "foot protection",
+      "safety equipment"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Safety footwear is notified under the personal protective equipment Quality Control Order.",
+      "action": "Confirm the protection class (S1/S3 etc.) against the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE03",
+    "number": "IS 4770",
+    "title": "Rubber Gloves for Electrical Purposes",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 1991,
+    "status": "Current",
+    "latestVersion": "IS 4770:1991",
+    "amendments": [],
+    "scope": "Dielectric withstand classes, dimensions and testing of insulating rubber gloves for live electrical work.",
+    "keywords": [
+      "rubber gloves",
+      "electrical gloves",
+      "insulating gloves",
+      "hand protection",
+      "ppe",
+      "electrical safety",
+      "live line"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [
+        "SW05"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Electrical insulating gloves are notified under the personal protective equipment Quality Control Order.",
+      "action": "Verify the voltage class and periodic retest records."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE04",
+    "number": "IS 5983",
+    "title": "Eye Protectors",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 1980,
+    "status": "Current",
+    "latestVersion": "IS 5983:1980",
+    "amendments": [
+      "Amd 1:1988"
+    ],
+    "scope": "Impact, optical and coverage requirements for safety spectacles, goggles and face shields.",
+    "keywords": [
+      "safety goggles",
+      "eye protection",
+      "spectacles",
+      "face shield",
+      "welding goggles",
+      "ppe",
+      "safety equipment"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Eye protectors appear in the PPE Quality Control Order in certain categories.",
+      "action": "Confirm QCO coverage for the specific eye protector type."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE05",
+    "number": "IS 9167",
+    "title": "Ear Protectors",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 1979,
+    "status": "Current",
+    "latestVersion": "IS 9167:1979",
+    "amendments": [],
+    "scope": "Attenuation performance and construction requirements for ear muffs and ear plugs used in high-noise environments.",
+    "keywords": [
+      "ear protector",
+      "ear muff",
+      "ear plug",
+      "hearing protection",
+      "noise",
+      "ppe",
+      "safety equipment"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE06",
+    "number": "IS 3521",
+    "title": "Industrial Safety Belts and Harnesses",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 1999,
+    "status": "Current",
+    "latestVersion": "IS 3521:1999",
+    "amendments": [],
+    "scope": "Static and dynamic strength requirements for fall-arrest belts, full-body harnesses and lanyards used at height.",
+    "keywords": [
+      "safety belt",
+      "safety harness",
+      "full body harness",
+      "fall arrest",
+      "lanyard",
+      "work at height",
+      "ppe",
+      "scaffolding"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Fall protection harnesses are notified under the personal protective equipment Quality Control Order.",
+      "action": "Verify the ISI licence and the dynamic test certificate."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "PE07",
+    "number": "IS 9473",
+    "title": "Respiratory Protective Devices - Filtering Half Masks to Protect Against Particles",
+    "category": "Personal Protective Equipment",
+    "domain": "Occupational Safety",
+    "year": 2002,
+    "status": "Current",
+    "latestVersion": "IS 9473:2002",
+    "amendments": [],
+    "scope": "Filtration efficiency classes, breathing resistance and leakage requirements for particulate filtering half masks.",
+    "keywords": [
+      "respirator",
+      "mask",
+      "dust mask",
+      "filtering half mask",
+      "ffp",
+      "respiratory protection",
+      "ppe",
+      "n95"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Particulate filtering half masks are notified under the personal protective equipment Quality Control Order.",
+      "action": "Confirm the filtration class (FFP1/FFP2/FFP3) against the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN01",
+    "number": "IS 303",
+    "title": "Plywood for General Purposes",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 1989,
+    "status": "Current",
+    "latestVersion": "IS 303:1989",
+    "amendments": [
+      "Amd 1:1995",
+      "Amd 2:2002"
+    ],
+    "scope": "Bonding classes (BWR/MR), glue shear strength and moisture content requirements for general purpose plywood used in furniture and joinery.",
+    "keywords": [
+      "plywood",
+      "ply",
+      "board",
+      "furniture",
+      "joinery",
+      "bwr",
+      "mr grade",
+      "wooden furniture",
+      "panel",
+      "table",
+      "cupboard"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "FN06"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "FN07"
+      ]
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Plywood and wooden flush door shutters are notified under a Quality Control Order.",
+      "action": "Verify the ISI licence covers the bonding class (BWR/MR) specified in the tender."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN02",
+    "number": "IS 710",
+    "title": "Marine Plywood",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 2010,
+    "status": "Current",
+    "latestVersion": "IS 710:2010",
+    "amendments": [],
+    "scope": "Boiling-water-proof marine grade plywood with higher glue shear and preservative retention requirements than general purpose grades.",
+    "keywords": [
+      "marine plywood",
+      "bwp",
+      "waterproof plywood",
+      "plywood",
+      "board",
+      "furniture",
+      "kitchen",
+      "wet area"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "FN06"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "FN07"
+      ]
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Marine plywood is covered by the plywood Quality Control Order.",
+      "action": "Confirm the BWP grade and preservative treatment on the licence."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN03",
+    "number": "IS 12406",
+    "title": "Medium Density Fibre Board for General Purposes",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 2003,
+    "status": "Current",
+    "latestVersion": "IS 12406:2003",
+    "amendments": [],
+    "scope": "Density, internal bond, swelling and surface finish requirements for MDF panels used in modular furniture.",
+    "keywords": [
+      "mdf",
+      "fibre board",
+      "medium density fibreboard",
+      "modular furniture",
+      "board",
+      "panel",
+      "furniture",
+      "desk"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "FN06"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "MDF and particle board appear in wood-panel Quality Control Orders in certain categories.",
+      "action": "Confirm current QCO coverage for MDF before tendering."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN04",
+    "number": "IS 1659",
+    "title": "Block Boards",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 2004,
+    "status": "Current",
+    "latestVersion": "IS 1659:2004",
+    "amendments": [],
+    "scope": "Core construction, bonding and strength requirements for block boards used in table tops, shutters and shelving.",
+    "keywords": [
+      "block board",
+      "blockboard",
+      "board",
+      "furniture",
+      "table top",
+      "shelf",
+      "panel",
+      "joinery"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "FN06"
+      ],
+      "safety": [],
+      "installation": [],
+      "material": [
+        "FN07"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Block board is covered by wood-panel Quality Control Orders in certain categories.",
+      "action": "Confirm current QCO coverage for block board."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN05",
+    "number": "IS 2202 (Pt 1)",
+    "title": "Wooden Flush Door Shutters (Solid Core Type) - Plywood Face Panels",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 1999,
+    "status": "Current",
+    "latestVersion": "IS 2202 (Pt 1):1999",
+    "amendments": [
+      "Amd 1:2005"
+    ],
+    "scope": "Construction, dimensional tolerance and performance requirements for solid core wooden flush door shutters.",
+    "keywords": [
+      "flush door",
+      "door shutter",
+      "wooden door",
+      "door",
+      "solid core",
+      "joinery",
+      "shutter"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "FN06"
+      ],
+      "safety": [
+        "FD02"
+      ],
+      "installation": [],
+      "material": [
+        "FN01",
+        "FN07"
+      ]
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Wooden flush door shutters are notified under a Quality Control Order.",
+      "action": "Verify the ISI licence and the core construction type."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN06",
+    "number": "IS 4020",
+    "title": "Door Shutters - Methods of Tests",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 1998,
+    "status": "Current",
+    "latestVersion": "IS 4020:1998",
+    "amendments": [],
+    "scope": "Dimensional, squareness, impact, slamming, edge loading and end immersion test methods for door shutters and wood panels.",
+    "keywords": [
+      "door test",
+      "shutter test",
+      "slamming test",
+      "edge loading",
+      "panel test",
+      "acceptance test",
+      "plywood test"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "FN07",
+    "number": "IS 401",
+    "title": "Preservation of Timber - Code of Practice",
+    "category": "Furniture & Wood Products",
+    "domain": "Furniture & Joinery",
+    "year": 2001,
+    "status": "Current",
+    "latestVersion": "IS 401:2001",
+    "amendments": [],
+    "scope": "Preservative types, treatment processes and retention requirements for protecting timber and wood panels against decay and insect attack.",
+    "keywords": [
+      "timber preservation",
+      "wood treatment",
+      "preservative",
+      "termite",
+      "borer",
+      "seasoning",
+      "timber",
+      "wood"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "IT01",
+    "number": "IS 13252 (Pt 1)",
+    "title": "Information Technology Equipment - Safety - General Requirements",
+    "category": "IT & Electronic Equipment",
+    "domain": "Information Technology",
+    "year": 2010,
+    "status": "Current",
+    "latestVersion": "IS 13252 (Pt 1):2010",
+    "amendments": [
+      "Amd 1:2015",
+      "Amd 2:2019"
+    ],
+    "scope": "Safety requirements for IT and audio/video equipment covering electric shock, energy, fire, mechanical and thermal hazards. The core standard for computers, monitors, printers and network equipment.",
+    "keywords": [
+      "computer",
+      "laptop",
+      "desktop",
+      "monitor",
+      "printer",
+      "scanner",
+      "it equipment",
+      "server",
+      "safety",
+      "electronics",
+      "power supply",
+      "adapter"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "IT06"
+      ],
+      "safety": [
+        "CB06"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS) - Electronics & IT Goods",
+      "reason": "IT equipment including laptops, desktops, monitors and printers is notified under the Compulsory Registration Scheme.",
+      "action": "Verify the CRS registration number (R-xxxxxxx) for each exact model, not just the brand."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "IT02",
+    "number": "IS 616",
+    "title": "Audio, Video and Similar Electronic Apparatus - Safety Requirements",
+    "category": "IT & Electronic Equipment",
+    "domain": "Information Technology",
+    "year": 2017,
+    "status": "Current",
+    "latestVersion": "IS 616:2017",
+    "amendments": [],
+    "scope": "Safety requirements for audio-visual apparatus including projectors, displays, public address systems and set-top boxes.",
+    "keywords": [
+      "projector",
+      "television",
+      "display",
+      "audio",
+      "video",
+      "public address",
+      "speaker",
+      "amplifier",
+      "av equipment",
+      "smart board"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "IT06"
+      ],
+      "safety": [
+        "CB06"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS) - Electronics & IT Goods",
+      "reason": "Audio and video apparatus is notified under the Compulsory Registration Scheme.",
+      "action": "Verify CRS registration for the exact model being supplied."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "IT03",
+    "number": "IS 302 (Pt 1)",
+    "title": "Safety of Household and Similar Electrical Appliances - General Requirements",
+    "category": "IT & Electronic Equipment",
+    "domain": "Information Technology",
+    "year": 2008,
+    "status": "Current",
+    "latestVersion": "IS 302 (Pt 1):2008",
+    "amendments": [],
+    "scope": "General safety requirements applicable to household and office electrical appliances, applied alongside the appliance-specific parts.",
+    "keywords": [
+      "appliance",
+      "electrical appliance",
+      "fan",
+      "water cooler",
+      "office equipment",
+      "safety",
+      "household"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [
+        "CB06"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Product Certification (ISI Mark) under a Quality Control Order",
+      "reason": "Many household and office appliance categories are notified under Quality Control Orders.",
+      "action": "Confirm the appliance-specific part of IS 302 and its QCO status."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "IT04",
+    "number": "IS 16242 (Pt 1)",
+    "title": "Uninterruptible Power Systems (UPS) - General and Safety Requirements",
+    "category": "IT & Electronic Equipment",
+    "domain": "Information Technology",
+    "year": 2014,
+    "status": "Current",
+    "latestVersion": "IS 16242 (Pt 1):2014",
+    "amendments": [],
+    "scope": "General and safety requirements for uninterruptible power systems used to back up IT and critical loads.",
+    "keywords": [
+      "ups",
+      "uninterruptible power supply",
+      "inverter",
+      "battery backup",
+      "power backup",
+      "online ups",
+      "it equipment"
+    ],
+    "relations": {
+      "normative": [
+        "CB06"
+      ],
+      "test": [],
+      "safety": [
+        "IT01",
+        "SW02"
+      ],
+      "installation": [],
+      "material": [
+        "IT05"
+      ]
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS) - Electronics & IT Goods",
+      "reason": "UPS units up to certain ratings are notified under the Compulsory Registration Scheme.",
+      "action": "Verify CRS registration and the VA rating covered."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "IT05",
+    "number": "IS 15549",
+    "title": "Stationary Valve Regulated Lead Acid Batteries",
+    "category": "IT & Electronic Equipment",
+    "domain": "Information Technology",
+    "year": 2005,
+    "status": "Current",
+    "latestVersion": "IS 15549:2005",
+    "amendments": [],
+    "scope": "Capacity, endurance and safety requirements for sealed VRLA batteries used in UPS, solar and telecom standby applications.",
+    "keywords": [
+      "battery",
+      "vrla",
+      "sealed battery",
+      "smf battery",
+      "lead acid",
+      "ups battery",
+      "backup battery",
+      "standby"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [
+        "IT04"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Applicable",
+      "scheme": "BIS Compulsory Registration Scheme (CRS) - Electronics & IT Goods",
+      "reason": "Sealed VRLA batteries are notified under the Compulsory Registration Scheme.",
+      "action": "Verify CRS registration and the Ah capacity covered by it."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
+  },
+  {
+    "id": "IT06",
+    "number": "IS 14700 (Pt 3/Sec 2)",
+    "title": "Electromagnetic Compatibility - Limits for Harmonic Current Emissions",
+    "category": "IT & Electronic Equipment",
+    "domain": "Information Technology",
+    "year": 2016,
+    "status": "Current",
+    "latestVersion": "IS 14700 (Pt 3/Sec 2):2016",
+    "amendments": [],
+    "scope": "Harmonic current emission limits for equipment connected to public low voltage supply systems, commonly cited as an EMC acceptance requirement.",
+    "keywords": [
+      "emc",
+      "electromagnetic compatibility",
+      "harmonic",
+      "emission",
+      "interference",
+      "emi",
+      "power quality",
+      "test"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [],
+      "safety": [],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory scheme identified for this category in the sample dataset.",
+      "action": "Re-verify against the current QCO list."
+    },
+    "verified": false,
+    "source": "Recalled from the public BIS catalogue - UNVERIFIED sample data"
   }
 ]
