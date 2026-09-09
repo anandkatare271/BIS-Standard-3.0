@@ -117,6 +117,24 @@ try {
     render(`loaded ${name}`, { initialPage: { name }, initialSession: session, initialRole: "admin" });
   }
 
+  // --- 3b. Every page in Hindi ---------------------------------------------
+  // A missing translation key renders as nothing rather than as English, so it
+  // is invisible unless something actually looks at the Hindi output.
+  let hindiFails = 0;
+  for (const name of PAGES) {
+    try {
+      const html = renderToString(React.createElement(App, {
+        initialPage: { name }, initialSession: session, initialRole: "admin", initialLang: "hi",
+      }));
+      if (!/[ऀ-ॿ]/.test(html)) throw new Error("no Devanagari in the output");
+      if (html.includes("undefined")) throw new Error("an unresolved translation key rendered as 'undefined'");
+    } catch (err) {
+      hindiFails += 1;
+      bad(`hindi ${name}: ${err.message}`);
+    }
+  }
+  if (hindiFails === 0) ok(`all ${PAGES.length} pages render in Hindi with no unresolved keys`);
+
   // --- 4. Standard detail for every standard ------------------------------
   let detailFails = 0;
   for (const s of catalog) {

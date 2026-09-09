@@ -1,9 +1,10 @@
-﻿import React, { useState, useMemo, useEffect } from "react";
+﻿import React, { useState, useMemo, useEffect, createContext, useContext } from "react";
 import {
   analyzeText, extractUpload, fetchAnalyses, fetchAnalysis, fetchSession,
   fetchStandards, saveDecision, updateStandard,
 } from "./api";
 import seedStandards from "../shared/standards.json";
+import { STR } from "./strings";
 import { detectLanguage, runAnalysis as runAnalysisEngine } from "../shared/matching.js";
 import {
   LayoutDashboard, Search, FileUp, ListChecks, GitBranch, Share2, History,
@@ -60,20 +61,12 @@ const runAnalysis = (text) => runAnalysisEngine(text, STANDARDS);
    I18N
    ========================================================================= */
 
-const STR = {
-  en: {
-    tagline: "Describe What You Procure. AI Finds What Standards Apply.",
-    nav: { dashboard: "Dashboard", analyzer: "Specification Analyzer", tender: "Tender Upload & Analyzer", search: "Search Standards", recommendations: "Recommended Standards", allied: "Allied & Normative", graph: "Knowledge Graph", version: "Version & Amendment", certification: "Certification Checker", compliance: "Compliance & Risk Score", specification: "Generate Specification", expert: "Expert Review", adminDb: "Standards Database" },
-    analyze: "Analyze", loadExample: "Try an example", viewRecs: "View recommended standards",
-    back: "Back",
-  },
-  hi: {
-    tagline: "आप जो खरीदना चाहते हैं उसका वर्णन करें। AI बताएगा कौन-से मानक लागू होते हैं।",
-    nav: { dashboard: "डैशबोर्ड", analyzer: "विनिर्देश विश्लेषक", tender: "निविदा अपलोड व विश्लेषण", search: "मानक खोजें", recommendations: "अनुशंसित मानक", allied: "संबद्ध व मानक-संदर्भ", graph: "ज्ञान ग्राफ", version: "संस्करण व संशोधन", certification: "प्रमाणन जाँच", compliance: "अनुपालन व जोखिम स्कोर", specification: "विनिर्देश तैयार करें", expert: "विशेषज्ञ समीक्षा", adminDb: "मानक डेटाबेस" },
-    analyze: "विश्लेषण करें", loadExample: "उदाहरण आज़माएँ", viewRecs: "अनुशंसित मानक देखें",
-    back: "वापस",
-  },
-};
+/**
+ * Language is provided through context rather than threaded as a prop: the page
+ * components are deep and many of them needed no other prop from App.
+ */
+const LangContext = createContext("en");
+const useT = () => STR[useContext(LangContext)] ?? STR.en;
 
 /* =========================================================================
    SMALL UI PRIMITIVES
@@ -136,6 +129,7 @@ function ModeBadge({ mode, cached }) {
 
 /** Non-blocking notice for the failures that used to be invisible. */
 function Toast({ toast, onDismiss }) {
+  const t = useT();
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(onDismiss, 6000);
@@ -149,7 +143,7 @@ function Toast({ toast, onDismiss }) {
       <div className={`flex items-start gap-2 px-4 py-3 rounded shadow-lg border text-sm ${warn ? "bg-amber-50 border-amber-300 text-amber-900" : "bg-rose-50 border-rose-300 text-rose-900"}`}>
         <AlertTriangle size={16} className="shrink-0 mt-0.5" />
         <span className="flex-1">{toast.message}</span>
-        <button onClick={onDismiss} aria-label="Dismiss" className="text-slate-400 hover:text-slate-700 leading-none">&times;</button>
+        <button onClick={onDismiss} aria-label={t.dismiss} className="text-slate-400 hover:text-slate-700 leading-none">&times;</button>
       </div>
     </div>
   );
@@ -157,13 +151,14 @@ function Toast({ toast, onDismiss }) {
 
 /** Staged progress. A ten-second await with no feedback reads as a hung app. */
 function BusyOverlay({ stage }) {
+  const t = useT();
   if (!stage) return null;
   return (
     <div className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-[1px] flex items-start justify-center pt-32">
       <div className="bg-white border border-slate-300 rounded shadow-xl px-6 py-5 max-w-sm w-full">
         <div className="flex items-center gap-3 mb-3">
           <span className="inline-block w-4 h-4 border-2 border-slate-300 border-t-slate-900 rounded-full animate-spin" />
-          <span className="font-serif font-semibold text-sm">Analyzing</span>
+          <span className="font-serif font-semibold text-sm">{t.busyTitle}</span>
         </div>
         <p className="text-sm text-slate-600">{stage}</p>
       </div>
@@ -224,6 +219,7 @@ function Panel({ title, icon: Icon, right, children, className = "" }) {
 }
 
 function EmptyState({ text, cta, onCta }) {
+  const t = useT();
   return (
     <div className="flex flex-col items-center justify-center text-center py-16 border border-dashed border-slate-300 rounded-md bg-slate-50">
       <Sparkles className="text-amber-500 mb-3" size={28} />
@@ -248,8 +244,8 @@ const EXAMPLES = [
  * `initialPage` / `initialSession` let a caller open the app on a specific page or
  * pre-load a saved session (used for deep links and by the smoke-render check).
  */
-export default function App({ initialPage = { name: "dashboard" }, initialSession = null, initialRole = "officer" }) {
-  const [lang, setLang] = useState("en");
+export default function App({ initialPage = { name: "dashboard" }, initialSession = null, initialRole = "officer", initialLang = "en" }) {
+  const [lang, setLang] = useState(initialLang);
   const [role, setRole] = useState(initialRole);
   const [page, setPage] = useState(initialPage);
   const [queryText, setQueryText] = useState("");
@@ -417,6 +413,7 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
   if (role === "admin") NAV.push({ key: "adminDb", label: t.nav.adminDb, icon: Database });
 
   return (
+    <LangContext.Provider value={lang}>
     <div className="min-h-screen flex bg-slate-100 text-slate-900 font-sans text-[14px]">
       {/* SIDEBAR */}
       <aside className="w-64 shrink-0 bg-slate-900 text-slate-200 flex flex-col">
@@ -425,7 +422,7 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
             <div className="w-8 h-8 rounded bg-amber-500 flex items-center justify-center font-serif font-bold text-slate-900">IS</div>
             <div>
               <div className="font-serif font-semibold text-white leading-tight">IS-Match AI</div>
-              <div className="text-[10px] text-slate-400 tracking-wide">Standards Recommendation Engine</div>
+              <div className="text-[10px] text-slate-400 tracking-wide">{t.appSubtitle}</div>
             </div>
           </div>
         </div>
@@ -448,13 +445,13 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
           })}
         </nav>
         <div className="px-5 py-4 border-t border-slate-800 text-[11px] text-slate-400">
-          <div className="mb-2">Viewing as</div>
+          <div className="mb-2">{t.viewingAs}</div>
           <select value={role} onChange={(e) => setRole(e.target.value)} className="w-full bg-slate-800 text-slate-100 rounded px-2 py-1.5 text-xs border border-slate-700">
-            <option value="officer">Procurement Officer</option>
-            <option value="expert">Technical Expert</option>
-            <option value="admin">Administrator</option>
+            <option value="officer">{t.roleOfficer}</option>
+            <option value="expert">{t.roleExpert}</option>
+            <option value="admin">{t.roleAdmin}</option>
           </select>
-          <div className="mt-3 text-slate-500">Prototype build · SIH 2026</div>
+          <div className="mt-3 text-slate-500">{t.prototypeBuild}</div>
         </div>
       </aside>
 
@@ -463,7 +460,7 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
         {/* TOP BAR */}
         <header className="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs text-slate-500">
-            <button onClick={() => go("dashboard")} className="hover:text-slate-800">Home</button>
+            <button onClick={() => go("dashboard")} className="hover:text-slate-800">{t.home}</button>
             <ChevronRight size={12} />
             <span className="text-slate-800 font-medium">{NAV.find((n) => n.key === page.name)?.label || "Standard Detail"}</span>
           </div>
@@ -522,6 +519,7 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
       <BusyOverlay stage={busy} />
       <Toast toast={toast} onDismiss={() => setToast(null)} />
     </div>
+    </LangContext.Provider>
   );
 }
 
@@ -574,10 +572,10 @@ function DashboardPage({ t, lang, analysis, go, outdatedCount, auditLog, history
           {analysis ? (
             <div className="space-y-2 text-sm">
               <div><span className="text-slate-500">Query:</span> <span className="italic">"{analysis.query}"</span></div>
-              <div><span className="text-slate-500">Detected language:</span> {analysis.language}</div>
-              <div><span className="text-slate-500">Detected product:</span> {analysis.product}</div>
-              <div><span className="text-slate-500">Recommendations:</span> {analysis.recommendations.length} standards identified</div>
-              <button onClick={() => go("recommendations")} className="mt-2 text-amber-700 text-sm font-medium hover:underline">View full recommendation set →</button>
+              <div><span className="text-slate-500">{t.detectedLanguage}:</span> {analysis.language}</div>
+              <div><span className="text-slate-500">{t.detectedProduct}:</span> {analysis.product}</div>
+              <div><span className="text-slate-500">{t.recommendationsLabel}:</span> {analysis.recommendations.length} standards identified</div>
+              <button onClick={() => go("recommendations")} className="mt-2 text-amber-700 text-sm font-medium hover:underline">{t.viewFullRecs}</button>
             </div>
           ) : (
             <EmptyState text="No analysis has been run yet. Start by describing a product or specification to procure." cta="Open analyzer" onCta={() => go("analyzer")} />
@@ -585,7 +583,7 @@ function DashboardPage({ t, lang, analysis, go, outdatedCount, auditLog, history
         </Panel>
         <Panel title="Recent activity" icon={Activity}>
           {auditLog.length === 0 ? (
-            <p className="text-slate-500 text-sm">No actions logged yet in this session.</p>
+            <p className="text-slate-500 text-sm">{t.noActivity}</p>
           ) : (
             <ul className="space-y-1.5 text-sm max-h-52 overflow-y-auto">
               {auditLog.slice(0, 8).map((a, i) => (
@@ -613,7 +611,7 @@ function DashboardPage({ t, lang, analysis, go, outdatedCount, auditLog, history
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-slate-400 border-b border-slate-200">
-                  <th className="pb-2">Product</th><th className="pb-2">Query</th><th className="pb-2">Language</th><th className="pb-2">Decisions</th><th className="pb-2">Saved</th><th className="pb-2 sr-only">Action</th>
+                  <th className="pb-2">{t.product}</th><th className="pb-2">Query</th><th className="pb-2">{t.language}</th><th className="pb-2">{t.decisions}</th><th className="pb-2">{t.saved}</th><th className="pb-2 sr-only">{t.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -625,7 +623,7 @@ function DashboardPage({ t, lang, analysis, go, outdatedCount, auditLog, history
                     <td className="py-2 font-mono">{h.decisionCount}</td>
                     <td className="py-2 text-xs text-slate-400">{new Date(h.createdAt).toLocaleString("en-IN")}</td>
                     <td className="py-2 text-right">
-                      <button onClick={() => onOpenAnalysis?.(h.analysisId)} className="text-xs text-amber-700 hover:underline">Reopen</button>
+                      <button onClick={() => onOpenAnalysis?.(h.analysisId)} className="text-xs text-amber-700 hover:underline">{t.reopen}</button>
                     </td>
                   </tr>
                 ))}
@@ -645,15 +643,15 @@ function DashboardPage({ t, lang, analysis, go, outdatedCount, auditLog, history
 function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go, busy }) {
   return (
     <div className="max-w-4xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Specification Analyzer</h1>
-      <p className="text-slate-500 text-sm mb-5">Describe what you need to procure in plain language — English, Hindi, or Hinglish.</p>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.analyzerTitle}</h1>
+      <p className="text-slate-500 text-sm mb-5">{t.analyzerLead}</p>
 
       <Panel>
         <textarea
           value={queryText}
           onChange={(e) => setQueryText(e.target.value)}
           rows={4}
-          placeholder="e.g. We need to procure 200 solar-powered LED street lights for rural roads, weather resistant with electrical safety."
+          placeholder={t.analyzerPlaceholder}
           className="w-full border border-slate-300 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
         <div className="flex flex-wrap gap-2 mt-3">
@@ -672,7 +670,7 @@ function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go, bus
             {busy
               ? <span className="inline-block w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
               : <Sparkles size={15} />}
-            {busy ? "Analyzing…" : t.analyze}
+            {busy ? t.analyzing + "…" : t.analyze}
           </button>
           {queryText.trim() && <span className="text-xs text-slate-500">Detected language: {detectLanguage(queryText)}</span>}
         </div>
@@ -680,7 +678,7 @@ function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go, bus
 
       {analysis && (
         <div className="mt-6 space-y-4">
-          <Panel title="Extracted requirements" icon={ListChecks}>
+          <Panel title={t.extractedRequirements} icon={ListChecks}>
             <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-3">
               {Object.entries(analysis.extracted).map(([k, v]) => (
                 <div key={k}>
@@ -706,24 +704,25 @@ function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go, bus
    ========================================================================= */
 
 function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go, busy, onError }) {
+  const t = useT();
   const [extracting, setExtracting] = useState(null);
   const sample = "Draft tender clause: Supply and installation of solar powered LED street lights across rural road network. Fixtures shall be weather resistant and energy efficient. Reference: IS 16106:2013.";
   return (
     <div className="max-w-4xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Tender Upload & Analyzer</h1>
-      <p className="text-slate-500 text-sm mb-5">Paste tender specification text below to audit it for missing, outdated or conflicting standards references.</p>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.tenderTitle}</h1>
+      <p className="text-slate-500 text-sm mb-5">{t.tenderLead}</p>
 
       <Panel>
         <textarea
           value={tenderText}
           onChange={(e) => setTenderText(e.target.value)}
           rows={5}
-          placeholder="Paste tender / specification text here (PDF & DOCX upload simulated in this prototype via pasted text)…"
+          placeholder={t.tenderPlaceholder}
           className="w-full border border-slate-300 rounded p-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
         <div className="flex items-center gap-3 mt-3">
           <button onClick={() => setTenderText(sample)} className="text-xs px-2.5 py-1 border border-slate-300 rounded-full text-slate-600 hover:border-amber-400 hover:text-amber-700">
-            Load sample tender clause
+            {t.loadSampleClause}
           </button>
           <label className="text-xs px-2.5 py-1 border border-dashed border-slate-300 rounded-full text-slate-600 cursor-pointer hover:border-amber-400">
             Upload PDF/DOCX/TXT
@@ -762,20 +761,20 @@ function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go, busy, 
           {busy
             ? <span className="inline-block w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
             : <FileUp size={15} />}
-          {busy ? "Analyzing…" : "Analyze tender"}
+          {busy ? t.analyzing + "…" : t.analyzeTender}
         </button>
       </Panel>
 
       {analysis && (
         <div className="mt-6 grid md:grid-cols-2 gap-4">
-          <Panel title="Missing standards" icon={AlertTriangle}>
+          <Panel title={t.missingStandards} icon={AlertTriangle}>
             <ul className="space-y-2 text-sm">
               {analysis.missing.map((m, i) => (
                 <li key={i} className="flex gap-2"><AlertTriangle size={14} className="text-orange-500 mt-0.5 shrink-0" />{m}</li>
               ))}
             </ul>
           </Panel>
-          <Panel title="Outdated references" icon={History}>
+          <Panel title={t.outdatedReferences} icon={History}>
             {analysis.recommendations.filter((r) => byId(r.id).status === "Superseded").length === 0 ? (
               <p className="text-sm text-emerald-700 flex items-center gap-2"><CheckCircle2 size={15} /> No outdated references detected among matched standards.</p>
             ) : (
@@ -792,11 +791,11 @@ function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go, busy, 
               </ul>
             )}
           </Panel>
-          <Panel title="Conflicts detected" icon={AlertTriangle} className="md:col-span-2">
-            <p className="text-sm text-slate-600">No direct scope conflicts detected between matched standards in this demo pass. Standards with overlapping scope (e.g. luminaire safety vs. LED-specific performance) are shown together in <button onClick={() => go("allied")} className="text-amber-700 underline">Allied &amp; Normative Standards</button> for expert review.</p>
+          <Panel title={t.conflictsDetected} icon={AlertTriangle} className="md:col-span-2">
+            <p className="text-sm text-slate-600">{t.conflictsBody} <button onClick={() => go("allied")} className="text-amber-700 underline">{t.alliedTitle}</button> {t.forExpertReview}</p>
           </Panel>
           <div className="md:col-span-2 flex justify-end">
-            <button onClick={() => go("compliance")} className="px-4 py-2 bg-amber-600 text-white rounded text-sm font-medium hover:bg-amber-500">View full compliance score →</button>
+            <button onClick={() => go("compliance")} className="px-4 py-2 bg-amber-600 text-white rounded text-sm font-medium hover:bg-amber-500">{t.viewFullCompliance}</button>
           </div>
         </div>
       )}
@@ -809,6 +808,7 @@ function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go, busy, 
    ========================================================================= */
 
 function SearchPage({ searchTerm, setSearchTerm, go, catalogTick }) {
+  const t = useT();
   const results = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
     if (!q) return STANDARDS;
@@ -819,14 +819,14 @@ function SearchPage({ searchTerm, setSearchTerm, go, catalogTick }) {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Search Standards</h1>
-      <p className="text-slate-500 text-sm mb-4">Browse the full sample dataset by standard number, title, category or keyword.</p>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.searchTitle}</h1>
+      <p className="text-slate-500 text-sm mb-4">{t.searchLead}</p>
       <div className="relative mb-5">
         <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
         <input
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search e.g. 'LED', 'fire door', 'water tank', 'IS 1520'…"
+          placeholder={t.searchPlaceholder}
           className="w-full border border-slate-300 rounded pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
         />
       </div>
@@ -841,7 +841,7 @@ function SearchPage({ searchTerm, setSearchTerm, go, catalogTick }) {
             <div className="text-xs text-slate-400">{s.category} · {s.domain}</div>
           </button>
         ))}
-        {results.length === 0 && <p className="text-slate-500 text-sm col-span-2">No standards matched your search.</p>}
+        {results.length === 0 && <p className="text-slate-500 text-sm col-span-2">{t.searchEmpty}</p>}
       </div>
     </div>
   );
@@ -852,12 +852,13 @@ function SearchPage({ searchTerm, setSearchTerm, go, catalogTick }) {
    ========================================================================= */
 
 function RecommendationsPage({ analysis, decisions, setDecision, go }) {
+  const t = useT();
   if (!analysis) return <EmptyState text="Run the Specification Analyzer first to generate AI-recommended standards." cta="Open analyzer" onCta={() => go("analyzer")} />;
 
   return (
     <div className="max-w-5xl">
       <div className="flex items-start justify-between gap-3 mb-1">
-        <h1 className="font-serif text-xl font-semibold">Recommendation Results</h1>
+        <h1 className="font-serif text-xl font-semibold">{t.recsTitle}</h1>
         <ModeBadge mode={analysis.mode} cached={analysis.cached} />
       </div>
       <p className="text-slate-500 text-sm mb-1">Product: <span className="font-medium text-slate-800">{analysis.product}</span></p>
@@ -870,7 +871,7 @@ function RecommendationsPage({ analysis, decisions, setDecision, go }) {
       {analysis.aiSummary && (
         <div className="mb-5 bg-emerald-50/60 border border-emerald-200 rounded-md p-4">
           <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 mb-1.5">
-            <Sparkles size={13} /> AI summary
+            <Sparkles size={13} /> {t.aiSummary}
           </div>
           <p className="text-sm text-slate-700 leading-relaxed">{analysis.aiSummary}</p>
           <p className="text-[11px] text-emerald-800/70 mt-2">
@@ -898,7 +899,7 @@ function RecommendationsPage({ analysis, decisions, setDecision, go }) {
               </div>
 
               <div className="bg-slate-50 rounded p-3 mb-3">
-                <div className="text-xs font-semibold text-slate-500 mb-1.5">Why recommended?</div>
+                <div className="text-xs font-semibold text-slate-500 mb-1.5">{t.whyRecommended}</div>
                 <ul className="space-y-1">
                   {r.reasons.map((reason, i) => (
                     <li key={i} className="flex gap-2 text-sm text-slate-700"><CheckCircle2 size={14} className="text-emerald-600 mt-0.5 shrink-0" />{reason}</li>
@@ -907,18 +908,18 @@ function RecommendationsPage({ analysis, decisions, setDecision, go }) {
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                <button onClick={() => go("standardDetail", { id: s.id })} className="text-xs px-3 py-1.5 border border-slate-300 rounded text-slate-700 hover:bg-slate-50">View details</button>
+                <button onClick={() => go("standardDetail", { id: s.id })} className="text-xs px-3 py-1.5 border border-slate-300 rounded text-slate-700 hover:bg-slate-50">{t.viewDetails}</button>
                 <button onClick={() => setDecision(r.id, "accepted")} className={`text-xs px-3 py-1.5 rounded border flex items-center gap-1 ${decision === "accepted" ? "bg-emerald-600 text-white border-emerald-600" : "border-emerald-300 text-emerald-700 hover:bg-emerald-50"}`}>
-                  <CheckCircle2 size={13} /> Accept
+                  <CheckCircle2 size={13} /> {t.accept}
                 </button>
                 <button onClick={() => setDecision(r.id, "rejected")} className={`text-xs px-3 py-1.5 rounded border flex items-center gap-1 ${decision === "rejected" ? "bg-rose-600 text-white border-rose-600" : "border-rose-300 text-rose-700 hover:bg-rose-50"}`}>
-                  <XCircle size={13} /> Reject
+                  <XCircle size={13} /> {t.reject}
                 </button>
                 <button onClick={() => setDecision(r.id, "not_applicable")} className={`text-xs px-3 py-1.5 rounded border ${decision === "not_applicable" ? "bg-slate-600 text-white border-slate-600" : "border-slate-300 text-slate-600 hover:bg-slate-50"}`}>
-                  Mark not applicable
+                  {t.notApplicable}
                 </button>
                 <button onClick={() => setDecision(r.id, "expert_review")} className={`text-xs px-3 py-1.5 rounded border ${decision === "expert_review" ? "bg-amber-600 text-white border-amber-600" : "border-amber-300 text-amber-700 hover:bg-amber-50"}`}>
-                  Send to expert review
+                  {t.sendToExpert}
                 </button>
               </div>
             </div>
@@ -927,9 +928,9 @@ function RecommendationsPage({ analysis, decisions, setDecision, go }) {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3">
-        <button onClick={() => go("allied")} className="px-4 py-2 border border-slate-300 rounded text-sm hover:bg-white">View allied &amp; normative view →</button>
-        <button onClick={() => go("graph")} className="px-4 py-2 border border-slate-300 rounded text-sm hover:bg-white">Open knowledge graph →</button>
-        <button onClick={() => go("compliance")} className="px-4 py-2 bg-amber-600 text-white rounded text-sm hover:bg-amber-500">View compliance &amp; risk score →</button>
+        <button onClick={() => go("allied")} className="px-4 py-2 border border-slate-300 rounded text-sm hover:bg-white">{t.viewAllied}</button>
+        <button onClick={() => go("graph")} className="px-4 py-2 border border-slate-300 rounded text-sm hover:bg-white">{t.openGraph}</button>
+        <button onClick={() => go("compliance")} className="px-4 py-2 bg-amber-600 text-white rounded text-sm hover:bg-amber-500">{t.viewComplianceScore}</button>
       </div>
     </div>
   );
@@ -940,6 +941,7 @@ function RecommendationsPage({ analysis, decisions, setDecision, go }) {
    ========================================================================= */
 
 function StandardDetailPage({ id, go, decisions, setDecision }) {
+  const t = useT();
   const s = findStandard(id);
   if (!s) return <EmptyState text="No standard selected." cta="Search standards" onCta={() => go("search")} />;
   const decision = decisions[s.id];
@@ -974,10 +976,10 @@ function StandardDetailPage({ id, go, decisions, setDecision }) {
         <h2 className="font-serif text-lg text-slate-800 mb-4">{s.title}</h2>
 
         <div className="grid sm:grid-cols-2 gap-4 mb-5 text-sm">
-          <div><span className="text-slate-400 text-xs">Year of edition</span><div className="font-medium">{s.year}</div></div>
-          <div><span className="text-slate-400 text-xs">Latest available version</span><div className="font-medium">{s.latestVersion}</div></div>
-          <div><span className="text-slate-400 text-xs">Amendments</span><div className="font-medium">{s.amendments.length ? s.amendments.join(", ") : "None on record"}</div></div>
-          <div><span className="text-slate-400 text-xs">Certification status</span><div className="font-medium">{s.certification.status}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.year}</span><div className="font-medium">{s.year}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.latestVersion}</span><div className="font-medium">{s.latestVersion}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.amendments}</span><div className="font-medium">{s.amendments.length ? s.amendments.join(", ") : "None on record"}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.certificationStatus}</span><div className="font-medium">{s.certification.status}</div></div>
         </div>
 
         {s.supersededNote && (
@@ -987,7 +989,7 @@ function StandardDetailPage({ id, go, decisions, setDecision }) {
         )}
 
         <div className="mb-5">
-          <div className="text-xs font-semibold text-slate-500 mb-1">Scope</div>
+          <div className="text-xs font-semibold text-slate-500 mb-1">{t.scope}</div>
           <p className="text-sm text-slate-700">{s.scope}</p>
         </div>
 
@@ -1001,17 +1003,17 @@ function StandardDetailPage({ id, go, decisions, setDecision }) {
 
         {s.certification.status !== "Not Applicable" && (
           <div className="bg-slate-50 rounded p-3 mb-5 text-sm">
-            <div className="font-semibold text-slate-700 mb-1">Certification intelligence</div>
-            <div><span className="text-slate-400 text-xs">Scheme:</span> {s.certification.scheme}</div>
-            <div><span className="text-slate-400 text-xs">Reason:</span> {s.certification.reason}</div>
-            <div><span className="text-slate-400 text-xs">Recommended action:</span> {s.certification.action}</div>
+            <div className="font-semibold text-slate-700 mb-1">{t.certificationIntelligence}</div>
+            <div><span className="text-slate-400 text-xs">{t.scheme}:</span> {s.certification.scheme}</div>
+            <div><span className="text-slate-400 text-xs">{t.reason}:</span> {s.certification.reason}</div>
+            <div><span className="text-slate-400 text-xs">{t.recommendedAction}:</span> {s.certification.action}</div>
           </div>
         )}
 
         <div className="flex flex-wrap gap-2">
           <button onClick={() => go("graph")} className="text-xs px-3 py-1.5 border border-slate-300 rounded hover:bg-slate-50 flex items-center gap-1"><Share2 size={13} /> View in knowledge graph</button>
           <button onClick={() => setDecision(s.id, "accepted")} className={`text-xs px-3 py-1.5 rounded border flex items-center gap-1 ${decision === "accepted" ? "bg-emerald-600 text-white border-emerald-600" : "border-emerald-300 text-emerald-700 hover:bg-emerald-50"}`}>
-            <CheckCircle2 size={13} /> Add to tender
+            <CheckCircle2 size={13} /> {t.addToTender}
           </button>
         </div>
       </div>
@@ -1024,6 +1026,7 @@ function StandardDetailPage({ id, go, decisions, setDecision }) {
    ========================================================================= */
 
 function AlliedPage({ analysis, go }) {
+  const t = useT();
   if (!analysis) return <EmptyState text="Run an analysis to view allied and normative standards." cta="Open analyzer" onCta={() => go("analyzer")} />;
   const tiers = [
     { key: "Primary", label: "Primary standards", note: "Highly Recommended", color: "border-slate-900" },
@@ -1034,7 +1037,7 @@ function AlliedPage({ analysis, go }) {
   ];
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Allied &amp; Normative Standards</h1>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.alliedTitle}</h1>
       <p className="text-slate-500 text-sm mb-5">Standards tiered by relationship strength to the primary recommendation for: <span className="font-medium text-slate-800">{analysis.product}</span></p>
 
       <div className="space-y-5">
@@ -1066,8 +1069,8 @@ function AlliedPage({ analysis, go }) {
         })}
       </div>
 
-      <Panel title="Potential / contextual standards" icon={AlertTriangle} className="mt-6">
-        <p className="text-sm text-slate-500 mb-2">May Be Applicable — flagged as potentially missing from the current query and worth expert review:</p>
+      <Panel title={t.potentialStandards} icon={AlertTriangle} className="mt-6">
+        <p className="text-sm text-slate-500 mb-2">{t.potentialLead}</p>
         <ul className="space-y-1.5">
           {analysis.missing.map((m, i) => <li key={i} className="text-sm text-slate-700 flex gap-2"><AlertTriangle size={14} className="text-orange-500 mt-0.5 shrink-0" />{m}</li>)}
         </ul>
@@ -1081,6 +1084,7 @@ function AlliedPage({ analysis, go }) {
    ========================================================================= */
 
 function GraphPage({ analysis, go, focusId, setFocusId }) {
+  const t = useT();
   if (!analysis) return <EmptyState text="Run an analysis to explore the standards relationship graph." cta="Open analyzer" onCta={() => go("analyzer")} />;
 
   const focus = findStandard(focusId) || byId(analysis.recommendations[0]?.id);
@@ -1107,8 +1111,8 @@ function GraphPage({ analysis, go, focusId, setFocusId }) {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Standards Relationship Graph</h1>
-      <p className="text-slate-500 text-sm mb-4">Click any satellite node to inspect that standard, or change the focus below.</p>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.graphTitle}</h1>
+      <p className="text-slate-500 text-sm mb-4">{t.graphLead}</p>
 
       <div className="flex flex-wrap gap-2 mb-4">
         {analysis.recommendations.filter((r) => r.tier === "Primary" || r.tier === "Allied").map((r) => (
@@ -1137,17 +1141,17 @@ function GraphPage({ analysis, go, focusId, setFocusId }) {
           </svg>
         </div>
         <div className="space-y-3">
-          <Panel title="Legend">
+          <Panel title={t.legend}>
             <ul className="space-y-1.5 text-sm">
               {relTypes.map((rt) => (
                 <li key={rt.key} className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full" style={{ background: rt.color }} />{rt.label}</li>
               ))}
             </ul>
           </Panel>
-          <Panel title="Focused standard">
+          <Panel title={t.focusedStandard}>
             <div className="font-mono text-sm font-semibold">{focus.number}</div>
             <div className="text-sm text-slate-700 mb-2">{focus.title}</div>
-            <button onClick={() => go("standardDetail", { id: focus.id })} className="text-xs text-amber-700 hover:underline">Open full detail →</button>
+            <button onClick={() => go("standardDetail", { id: focus.id })} className="text-xs text-amber-700 hover:underline">{t.openFullDetail}</button>
           </Panel>
         </div>
       </div>
@@ -1160,22 +1164,23 @@ function GraphPage({ analysis, go, focusId, setFocusId }) {
    ========================================================================= */
 
 function VersionPage({ analysis }) {
+  const t = useT();
   const [manualId, setManualId] = useState(STANDARDS[0]?.id ?? null);
   const manual = byId(manualId ?? STANDARDS[0]?.id);
 
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="font-serif text-xl font-semibold mb-1">Version &amp; Amendment Checker</h1>
-        <p className="text-slate-500 text-sm mb-4">Verify whether a standard is current, revised, superseded, withdrawn or under revision.</p>
+        <h1 className="font-serif text-xl font-semibold mb-1">{t.versionTitle}</h1>
+        <p className="text-slate-500 text-sm mb-4">{t.versionLead}</p>
       </div>
 
       {analysis && (
-        <Panel title="Standards in current analysis" icon={History}>
+        <Panel title={t.standardsInAnalysis} icon={History}>
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-slate-400 border-b border-slate-200">
-                <th className="pb-2">Standard</th><th className="pb-2">Status</th><th className="pb-2">Latest version</th><th className="pb-2">Amendments</th>
+                <th className="pb-2">{t.standard}</th><th className="pb-2">{t.status}</th><th className="pb-2">{t.latestVersion}</th><th className="pb-2">{t.amendments}</th>
               </tr>
             </thead>
             <tbody>
@@ -1199,7 +1204,7 @@ function VersionPage({ analysis }) {
                 return (
                   <div key={s.id} className="bg-amber-50 border border-amber-300 rounded p-3 text-sm flex gap-2">
                     <AlertTriangle size={16} className="text-amber-600 shrink-0 mt-0.5" />
-                    <div><span className="font-semibold">Outdated reference detected —</span> {s.number}. Latest available version: <span className="font-medium">{s.latestVersion}</span>. Recommendation: replace the older reference before tender publication.</div>
+                    <div><span className="font-semibold">{t.outdatedDetected}</span> {s.number}. Latest available version: <span className="font-medium">{s.latestVersion}</span>. Recommendation: replace the older reference before tender publication.</div>
                   </div>
                 );
               })}
@@ -1208,15 +1213,15 @@ function VersionPage({ analysis }) {
         </Panel>
       )}
 
-      <Panel title="Manual lookup" icon={Search}>
+      <Panel title={t.manualLookup} icon={Search}>
         <select value={manualId} onChange={(e) => setManualId(e.target.value)} className="border border-slate-300 rounded px-3 py-2 text-sm mb-4 w-full sm:w-96">
           {STANDARDS.map((s) => <option key={s.id} value={s.id}>{s.number} — {s.title}</option>)}
         </select>
         <div className="grid sm:grid-cols-2 gap-3 text-sm">
-          <div><span className="text-slate-400 text-xs">Status</span><div><StatusBadge status={manual.status} /></div></div>
-          <div><span className="text-slate-400 text-xs">Edition</span><div className="font-medium">{manual.year}</div></div>
-          <div><span className="text-slate-400 text-xs">Latest version</span><div className="font-medium">{manual.latestVersion}</div></div>
-          <div><span className="text-slate-400 text-xs">Amendments</span><div className="font-medium">{manual.amendments.length ? manual.amendments.join(", ") : "None on record"}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.status}</span><div><StatusBadge status={manual.status} /></div></div>
+          <div><span className="text-slate-400 text-xs">{t.edition}</span><div className="font-medium">{manual.year}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.latestVersion}</span><div className="font-medium">{manual.latestVersion}</div></div>
+          <div><span className="text-slate-400 text-xs">{t.amendments}</span><div className="font-medium">{manual.amendments.length ? manual.amendments.join(", ") : "None on record"}</div></div>
         </div>
         {manual.supersededNote && <p className="mt-3 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded p-2.5">{manual.supersededNote}</p>}
       </Panel>
@@ -1231,6 +1236,7 @@ function VersionPage({ analysis }) {
 const getCategoryList = () => [...new Set(STANDARDS.map((s) => s.category))];
 
 function CertificationPage({ analysis }) {
+  const t = useT();
   const categoryList = getCategoryList();
   const [manualCategory, setManualCategory] = useState(categoryList[0]);
   const manualStandards = STANDARDS.filter((s) => s.category === manualCategory && s.certification.status !== "Not Applicable");
@@ -1238,8 +1244,8 @@ function CertificationPage({ analysis }) {
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h1 className="font-serif text-xl font-semibold mb-1">Certification Checker</h1>
-        <p className="text-slate-500 text-sm">Distinguishes Indian Standard applicability from legally mandatory certification. AI suggestions must be verified against current regulatory notifications.</p>
+        <h1 className="font-serif text-xl font-semibold mb-1">{t.certTitle}</h1>
+        <p className="text-slate-500 text-sm">{t.certLead}</p>
       </div>
 
       {analysis && (
@@ -1250,25 +1256,25 @@ function CertificationPage({ analysis }) {
             </span>
             <span className="text-sm text-slate-700 font-medium">{analysis.certification.scheme}</span>
           </div>
-          <div className="text-sm text-slate-600 mb-1"><span className="text-slate-400 text-xs">Reason: </span>{analysis.certification.reason}</div>
-          <div className="text-sm text-slate-600"><span className="text-slate-400 text-xs">Recommended action: </span>{analysis.certification.action}</div>
+          <div className="text-sm text-slate-600 mb-1"><span className="text-slate-400 text-xs">{t.reason}: </span>{analysis.certification.reason}</div>
+          <div className="text-sm text-slate-600"><span className="text-slate-400 text-xs">{t.recommendedAction}: </span>{analysis.certification.action}</div>
         </Panel>
       )}
 
-      <Panel title="Manual category lookup" icon={Filter}>
+      <Panel title={t.manualCategoryLookup} icon={Filter}>
         <select value={manualCategory} onChange={(e) => setManualCategory(e.target.value)} className="border border-slate-300 rounded px-3 py-2 text-sm mb-4 w-full sm:w-72">
           {categoryList.map((c) => <option key={c} value={c}>{c}</option>)}
         </select>
         {manualStandards.length === 0 ? (
-          <p className="text-sm text-slate-500">No certification-relevant standards identified for this category in the demo dataset.</p>
+          <p className="text-sm text-slate-500">{t.certEmpty}</p>
         ) : (
           <div className="space-y-3">
             {manualStandards.map((s) => (
               <div key={s.id} className="border border-slate-200 rounded p-3 text-sm">
                 <div className="font-mono font-semibold mb-1">{s.number}</div>
-                <div className="mb-1"><span className="text-xs text-slate-400">Scheme: </span>{s.certification.scheme}</div>
-                <div className="mb-1"><span className="text-xs text-slate-400">Reason: </span>{s.certification.reason}</div>
-                <div><span className="text-xs text-slate-400">Action: </span>{s.certification.action}</div>
+                <div className="mb-1"><span className="text-xs text-slate-400">{t.scheme}: </span>{s.certification.scheme}</div>
+                <div className="mb-1"><span className="text-xs text-slate-400">{t.reason}: </span>{s.certification.reason}</div>
+                <div><span className="text-xs text-slate-400">{t.action}: </span>{s.certification.action}</div>
               </div>
             ))}
           </div>
@@ -1283,6 +1289,7 @@ function CertificationPage({ analysis }) {
    ========================================================================= */
 
 function CompliancePage({ analysis, go }) {
+  const t = useT();
   if (!analysis) return <EmptyState text="Run an analysis to generate a tender compliance and procurement risk score." cta="Open analyzer" onCta={() => go("analyzer")} />;
   const c = analysis.compliance;
   const risk = RISK_STYLE[c.risk];
@@ -1297,19 +1304,19 @@ function CompliancePage({ analysis, go }) {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Tender Standards Compliance Score</h1>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.complianceTitle}</h1>
       <p className="text-slate-500 text-sm mb-5">For: <span className="font-medium text-slate-800">{analysis.product}</span></p>
 
       <div className="grid md:grid-cols-3 gap-4 mb-6">
         <Panel className="flex flex-col items-center justify-center py-6">
           <ScoreRing value={c.overall} />
-          <div className="text-xs text-slate-500 mt-2">Overall Compliance Score</div>
+          <div className="text-xs text-slate-500 mt-2">{t.overallScore}</div>
         </Panel>
         <Panel className={`flex flex-col items-center justify-center py-6 ${risk.bg} ${risk.border}`}>
           <div className={`text-3xl font-serif font-bold ${risk.text}`}>{c.risk}</div>
-          <div className="text-xs text-slate-500 mt-2">Overall Procurement Risk</div>
+          <div className="text-xs text-slate-500 mt-2">{t.overallRisk}</div>
         </Panel>
-        <Panel title="Compliance DNA" icon={Activity} className="row-span-1">
+        <Panel title={t.complianceDna} icon={Activity} className="row-span-1">
           <ResponsiveContainer width="100%" height={140}>
             <RadarChart data={radarData} outerRadius={55}>
               <PolarGrid stroke="#e2e8f0" />
@@ -1322,7 +1329,7 @@ function CompliancePage({ analysis, go }) {
         </Panel>
       </div>
 
-      <Panel title="Sub-metric breakdown" icon={Gauge} className="mb-6">
+      <Panel title={t.subMetrics} icon={Gauge} className="mb-6">
         <div className="space-y-3">
           {[
             ["Standards coverage", c.coverage],
@@ -1341,14 +1348,14 @@ function CompliancePage({ analysis, go }) {
       </Panel>
 
       <div className="grid md:grid-cols-2 gap-4">
-        <Panel title="Potential missing requirements" icon={AlertTriangle}>
+        <Panel title={t.potentialMissing} icon={AlertTriangle}>
           <ul className="space-y-1.5 text-sm">
             {analysis.missing.map((m, i) => <li key={i} className="flex gap-2"><AlertTriangle size={14} className="text-orange-500 mt-0.5 shrink-0" />{m}</li>)}
           </ul>
         </Panel>
-        <Panel title="How this score is calculated" icon={Info}>
-          <p className="text-sm text-slate-600 mb-2">Weighted from semantic similarity (40%), product/domain match (20%), scope match (15%), requirement match (10%), reference relationships (10%) and certification relevance (5%), aggregated across standards coverage, version validity, normative references, safety coverage, certification coverage and technical completeness.</p>
-          <p className="text-xs text-slate-400">This score is AI-generated decision support and does not represent a final compliance determination.</p>
+        <Panel title={t.howCalculated} icon={Info}>
+          <p className="text-sm text-slate-600 mb-2">{t.howCalculatedBody}</p>
+          <p className="text-xs text-slate-400">{t.howCalculatedCaveat}</p>
         </Panel>
       </div>
     </div>
@@ -1360,6 +1367,7 @@ function CompliancePage({ analysis, go }) {
    ========================================================================= */
 
 function SpecificationPage({ analysis, decisions, go }) {
+  const t = useT();
   const [copied, setCopied] = useState(false);
   if (!analysis) return <EmptyState text="Run an analysis to generate a standards-aware draft specification." cta="Open analyzer" onCta={() => go("analyzer")} />;
 
@@ -1424,7 +1432,7 @@ EXPERT BEFORE USE IN AN ACTUAL TENDER DOCUMENT.
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Generate Standards-Aware Tender Specification</h1>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.specTitle}</h1>
       <div className="mb-4 bg-amber-50 border border-amber-300 text-amber-800 text-sm rounded p-3 flex gap-2">
         <AlertTriangle size={16} className="shrink-0 mt-0.5" /> AI-generated draft. Requires validation by a procurement or technical expert before use.
       </div>
@@ -1442,18 +1450,19 @@ EXPERT BEFORE USE IN AN ACTUAL TENDER DOCUMENT.
    ========================================================================= */
 
 function ExpertPage({ analysis, decisions, setDecision, auditLog, go }) {
+  const t = useT();
   if (!analysis) return <EmptyState text="Run an analysis to begin expert review." cta="Open analyzer" onCta={() => go("analyzer")} />;
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Technical Expert Console</h1>
-      <p className="text-slate-500 text-sm mb-5">AI is a decision-support tool, not the final authority. Review, accept, reject or escalate each recommendation.</p>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.expertTitle}</h1>
+      <p className="text-slate-500 text-sm mb-5">{t.expertLead}</p>
 
-      <Panel title="Recommendation queue" icon={UserCheck} className="mb-5">
+      <Panel title={t.recommendationQueue} icon={UserCheck} className="mb-5">
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-slate-400 border-b border-slate-200">
-              <th className="pb-2">Standard</th><th className="pb-2">Tier</th><th className="pb-2">Relevance</th><th className="pb-2">Decision</th><th className="pb-2">Actions</th>
+              <th className="pb-2">{t.standard}</th><th className="pb-2">Tier</th><th className="pb-2">{t.relevance}</th><th className="pb-2">{t.decision}</th><th className="pb-2">{t.actions}</th>
             </tr>
           </thead>
           <tbody>
@@ -1465,7 +1474,7 @@ function ExpertPage({ analysis, decisions, setDecision, auditLog, go }) {
                   <td className="py-2"><button onClick={() => go("standardDetail", { id: s.id })} className="font-mono hover:underline">{s.number}</button></td>
                   <td className="py-2"><TierBadge tier={r.tier} /></td>
                   <td className="py-2 font-mono">{r.relevance}%</td>
-                  <td className="py-2 capitalize">{d ? d.replace("_", " ") : <span className="text-slate-400">Pending</span>}</td>
+                  <td className="py-2 capitalize">{d ? d.replace("_", " ") : <span className="text-slate-400">{t.pending}</span>}</td>
                   <td className="py-2">
                     <div className="flex gap-1.5">
                       <button onClick={() => setDecision(r.id, "accepted")} className="text-emerald-600 hover:text-emerald-800"><CheckCircle2 size={16} /></button>
@@ -1480,8 +1489,8 @@ function ExpertPage({ analysis, decisions, setDecision, auditLog, go }) {
         </table>
       </Panel>
 
-      <Panel title="Audit trail" icon={FileText}>
-        {auditLog.length === 0 ? <p className="text-sm text-slate-500">No actions recorded yet.</p> : (
+      <Panel title={t.auditTrail} icon={FileText}>
+        {auditLog.length === 0 ? <p className="text-sm text-slate-500">{t.auditEmpty}</p> : (
           <ul className="space-y-1.5 text-sm max-h-64 overflow-y-auto">
             {auditLog.map((a, i) => (
               <li key={i} className="flex justify-between border-b border-slate-100 pb-1.5">
@@ -1501,6 +1510,7 @@ function ExpertPage({ analysis, decisions, setDecision, auditLog, go }) {
    ========================================================================= */
 
 function AdminDbPage({ onCatalogChange, onError }) {
+  const t = useT();
   const [, bump] = useState(0);
   const refresh = (list) => {
     applyStandards(list);
@@ -1518,13 +1528,13 @@ function AdminDbPage({ onCatalogChange, onError }) {
   };
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">Standards Database — Administrator View</h1>
+      <h1 className="font-serif text-xl font-semibold mb-1">{t.adminTitle}</h1>
       <p className="text-slate-500 text-sm mb-5">{STANDARDS.length} standards loaded from SQLite across {getCategoryList().length} categories. Status edits are saved to the database.</p>
       <Panel>
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-xs text-slate-400 border-b border-slate-200">
-              <th className="pb-2">Number</th><th className="pb-2">Title</th><th className="pb-2">Category</th><th className="pb-2">Status</th><th className="pb-2">Year</th>
+              <th className="pb-2">{t.number}</th><th className="pb-2">{t.title}</th><th className="pb-2">{t.category}</th><th className="pb-2">{t.status}</th><th className="pb-2">{t.year}</th>
             </tr>
           </thead>
           <tbody>
