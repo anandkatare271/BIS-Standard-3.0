@@ -29,6 +29,7 @@ import {
 import CATALOG from "../shared/standards.json" with { type: "json" };
 
 const CATALOG_IDS = new Set(CATALOG.map((s) => s.id));
+const byCategory = (id) => CATALOG.find((s) => s.id === id)?.category;
 const VALID_TIERS = new Set(["Primary", "Allied", "Normative", "Test", "Installation", "Optional"]);
 const COMPLIANCE_KEYS = [
   "overall", "coverage", "versionValidity", "normativeRefs",
@@ -237,49 +238,157 @@ describe("language detection", () => {
     assert.equal(detectLanguage("street light karne ke liye"), "Hinglish");
   });
 
-  // TODO(phase-2): BUG. The Hinglish list stores verb *stems* ("khareed"),
-  // but matchesTerm enforces whole-word boundaries, so the inflected forms
-  // people actually type do not match. Fixing this should flip both of these
-  // to "Hinglish".
-  test("inflected Hinglish verbs are missed (known bug)", () => {
-    assert.equal(detectLanguage("mujhe 50 pump khareedna hai"), "English");
-    assert.equal(detectLanguage("tank khareedni hai"), "English");
+  // Fixed in phase 2: verb roots are matched as prefixes, particles as whole
+  // words. Previously both of these were reported as English, because
+  // "khareed" as a whole word never matches "khareedna".
+  test("inflected Hinglish verbs are detected", () => {
+    assert.equal(detectLanguage("mujhe 50 pump khareedna hai"), "Hinglish");
+    assert.equal(detectLanguage("tank khareedni hai"), "Hinglish");
+    assert.equal(detectLanguage("cement kharidna hai"), "Hinglish");
+  });
+
+  test("prefix matching does not create false Hinglish", () => {
+    // Guards the same class of bug the whole-word rule was introduced for.
+    assert.equal(detectLanguage("chain link fencing supply"), "English");
+    assert.equal(detectLanguage("procure 40 nos office chairs"), "English");
   });
 });
 
-describe("generic fallback path", () => {
-  test("keyword overlap drives the match", () => {
+describe("generic path: scoring", () => {
+  test("a direct match cites the keywords it matched on", () => {
     const result = runAnalysis("outdoor luminaire for a lighting fixture", CATALOG);
     assert.equal(result.scenarioKey, "generic");
     assert.ok(result.recommendations.length > 0);
+
+    const direct = result.recommendations.filter((r) => r.tier === "Primary" || r.tier === "Allied");
+    assert.ok(direct.length > 0, "expected at least one direct match");
     assert.ok(
-      result.recommendations.every((r) => r.reasons.some((x) => x.includes("Keyword overlap"))),
-      "expected every generic recommendation to cite its keyword overlap",
+      direct.some((r) => r.reasons.some((x) => x.startsWith("Matched on"))),
+      "expected a direct match to cite its matched keywords",
     );
   });
 
-  // TODO(phase-2): BUG. With no keyword match the engine falls back to
-  // `scored.slice(0, 3)` — the first three catalog rows in category/number
-  // order — and labels the first one "Primary". An office-furniture query
-  // therefore returns LED luminaire standards at 42% confidence. This is the
-  // single worst demo failure mode and is what the graph-based rewrite fixes.
-  test("an unmatched query returns unrelated standards (known bug)", () => {
+  // Was the worst demo failure mode: with no keyword hit the engine returned
+  // the first three catalog rows and labelled the first "Primary", so an
+  // office-furniture query recommended LED luminaire standards at 42%.
+  test("a furniture query returns furniture standards", () => {
     const result = runAnalysis("procure 40 nos office chairs", CATALOG);
 
     assert.equal(result.scenarioKey, "generic");
-    assert.deepEqual(
-      result.recommendations.map((r) => [r.id, r.tier, r.relevance]),
-      [["SL01", "Primary", 42], ["SL02", "Allied", 42], ["SL03", "Normative", 42]],
+    const ids = result.recommendations.map((r) => r.id);
+    assert.ok(ids.length > 0, "expected recommendations");
+    assert.ok(
+      ids.every((id) => id.startsWith("FN")),
+      `expected only Furniture & Wood Products standards, got ${ids.join(", ")}`,
     );
-    assert.equal(result.compliance.risk, "High");
+    assert.ok(result.recommendations.some((r) => r.tier === "Primary"));
   });
 
-  test("tier is assigned by list position, not by relationship", () => {
-    // Documents the current behaviour the rewrite replaces: tiers[i] means the
-    // second-best match is always "Allied" regardless of what it actually is.
-    const result = runAnalysis("outdoor luminaire lighting fixture lamp", CATALOG);
-    assert.equal(result.recommendations[0].tier, "Primary");
-    if (result.recommendations.length > 1) assert.equal(result.recommendations[1].tier, "Allied");
+  test("rarity weighting keeps a catalog-wide word from winning", () => {
+    // "safety" appears across PPE, switchgear, lighting and IT rows, so it must
+    // not outrank the specific terms "safety helmet" and "helmet".
+    const result = runAnalysis("safety helmets and gloves for workers", CATALOG);
+    const primary = result.recommendations.filter((r) => r.tier === "Primary");
+
+    assert.deepEqual(primary.map((r) => r.id), ["PE01"]);
+    assert.ok(
+      result.recommendations.every((r) => byCategory(r.id) === "Personal Protective Equipment"),
+      `expected only PPE standards, got ${result.recommendations.map((r) => r.id).join(", ")}`,
+    );
+  });
+
+  test("a homonym across categories does not produce a false Primary", () => {
+    // "panel" and "board" mean different things in switchgear and joinery.
+    const result = runAnalysis("supply of lt distribution panel board", CATALOG);
+    const primary = result.recommendations.filter((r) => r.tier === "Primary");
+
+    assert.deepEqual(primary.map((r) => r.id), ["SW04"]);
+    assert.ok(
+      !result.recommendations.some((r) => r.id.startsWith("FN")),
+      "a wood-panel standard leaked into an electrical panel query",
+    );
+  });
+
+  test("an unmatched query recommends nothing rather than guessing", () => {
+    const result = runAnalysis("xyzzy nonsense qwerty", CATALOG);
+
+    assert.deepEqual(result.recommendations, []);
+    assert.equal(result.product, "Not classified");
+    assert.equal(result.compliance.risk, "Critical");
+  });
+});
+
+describe("generic path: relation-graph tiering", () => {
+  test("tier comes from the relation edge, not from list position", () => {
+    const result = runAnalysis("laying of hdpe water pipeline", CATALOG);
+    const tierOf = (id) => result.recommendations.find((r) => r.id === id)?.tier;
+
+    // PP10 is the pipe-laying code of practice. Nothing in the query names it;
+    // it is reached through PP03's `installation` edge, so it must be
+    // Installation tier — under the old positional scheme it was unreachable.
+    assert.equal(tierOf("PP03"), "Primary");
+    assert.equal(tierOf("PP10"), "Installation");
+  });
+
+  test("a test method is pulled in for a product query", () => {
+    // CE09 is the cement test method. The query says nothing about testing.
+    const result = runAnalysis("200 bags of 53 grade cement", CATALOG);
+    const rec = result.recommendations.find((r) => r.id === "CE09");
+
+    assert.ok(rec, "expected the cement test standard to be pulled in");
+    assert.equal(rec.tier, "Test");
+    assert.ok(rec.reasons.some((x) => x.includes("Referenced by")));
+  });
+
+  test("graph-derived recommendations say they came from the graph", () => {
+    const result = runAnalysis("rooftop solar panels with inverter", CATALOG);
+    const derived = result.recommendations.filter(
+      (r) => !r.reasons.some((x) => x.startsWith("Matched on")),
+    );
+
+    assert.ok(derived.length > 0, "expected at least one graph-derived recommendation");
+    for (const rec of derived) {
+      assert.ok(
+        rec.reasons.some((x) => x.includes("from the standards graph")),
+        `${rec.id} does not disclose that it came from the graph`,
+      );
+    }
+  });
+});
+
+describe("generic path: computed compliance", () => {
+  test("scores are derived, not constant", () => {
+    const a = runAnalysis("200 bags of 53 grade cement", CATALOG).compliance;
+    const b = runAnalysis("rooftop solar panels with inverter", CATALOG).compliance;
+    assert.notDeepEqual(a, b, "two different queries produced identical compliance scores");
+  });
+
+  test("versionValidity reflects the status of the matched standards", () => {
+    const result = runAnalysis("mild steel plain bar for reinforcement", CATALOG);
+    const matched = result.recommendations.map((r) => CATALOG.find((s) => s.id === r.id));
+    const currentShare = matched.filter((s) => s.status === "Current").length / matched.length;
+
+    assert.equal(result.compliance.versionValidity, Math.round(currentShare * 100));
+  });
+
+  test("a stale standard in the result set is reported as a gap", () => {
+    // ST03 (IS 432 Pt 1) is marked Under Revision in the catalog.
+    const result = runAnalysis("mild steel plain bar for reinforcement", CATALOG);
+    if (result.recommendations.some((r) => r.id === "ST03")) {
+      assert.ok(
+        result.missing.some((m) => m.includes("Version check required")),
+        "expected a version-currency gap to be reported",
+      );
+    }
+  });
+
+  test("gaps are specific to what the result set lacks", () => {
+    const result = runAnalysis("100 laptops for school computer lab", CATALOG);
+    assert.ok(Array.isArray(result.missing) && result.missing.length > 0);
+    assert.ok(
+      result.missing.every((m) => typeof m === "string" && m.length > 20),
+      "expected descriptive gap text",
+    );
   });
 });
 

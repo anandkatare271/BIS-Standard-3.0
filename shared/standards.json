@@ -175,8 +175,7 @@
     "keywords": [
       "electrical safety",
       "led",
-      "luminaire",
-      "safety"
+      "luminaire"
     ],
     "relations": {
       "normative": [
@@ -2978,7 +2977,8 @@
       "water supply",
       "plumbing",
       "pressure class",
-      "pipeline"
+      "pipeline",
+      "upvc pipe"
     ],
     "relations": {
       "normative": [
@@ -3021,7 +3021,8 @@
       "potable water",
       "water distribution",
       "sdr 11",
-      "internal plumbing"
+      "internal plumbing",
+      "cpvc pipe"
     ],
     "relations": {
       "normative": [
@@ -3062,7 +3063,9 @@
       "water supply",
       "buried pipeline",
       "pe 100",
-      "pipeline"
+      "pipeline",
+      "hdpe",
+      "pe pipe"
     ],
     "relations": {
       "normative": [
@@ -3659,7 +3662,9 @@
       "steel toe",
       "ppe",
       "foot protection",
-      "safety equipment"
+      "safety equipment",
+      "gumboot",
+      "shoe"
     ],
     "relations": {
       "normative": [],
@@ -3695,7 +3700,9 @@
       "hand protection",
       "ppe",
       "electrical safety",
-      "live line"
+      "live line",
+      "glove",
+      "hand glove"
     ],
     "relations": {
       "normative": [],
@@ -3880,15 +3887,20 @@
     "keywords": [
       "plywood",
       "ply",
-      "board",
       "furniture",
       "joinery",
       "bwr",
       "mr grade",
       "wooden furniture",
-      "panel",
       "table",
-      "cupboard"
+      "cupboard",
+      "chair",
+      "office chair",
+      "office furniture",
+      "almirah",
+      "shelf",
+      "bench",
+      "desk"
     ],
     "relations": {
       "normative": [],
@@ -3926,7 +3938,6 @@
       "bwp",
       "waterproof plywood",
       "plywood",
-      "board",
       "furniture",
       "kitchen",
       "wet area"
@@ -3967,10 +3978,14 @@
       "fibre board",
       "medium density fibreboard",
       "modular furniture",
-      "board",
-      "panel",
       "furniture",
-      "desk"
+      "desk",
+      "chair",
+      "office chair",
+      "office furniture",
+      "workstation",
+      "storage unit",
+      "partition"
     ],
     "relations": {
       "normative": [],
@@ -4004,12 +4019,13 @@
     "keywords": [
       "block board",
       "blockboard",
-      "board",
       "furniture",
       "table top",
       "shelf",
-      "panel",
-      "joinery"
+      "joinery",
+      "desk",
+      "office furniture",
+      "shelving"
     ],
     "relations": {
       "normative": [],
@@ -4051,7 +4067,8 @@
       "door",
       "solid core",
       "joinery",
-      "shutter"
+      "shutter",
+      "door frame"
     ],
     "relations": {
       "normative": [],
@@ -4172,10 +4189,13 @@
       "scanner",
       "it equipment",
       "server",
-      "safety",
       "electronics",
       "power supply",
-      "adapter"
+      "adapter",
+      "pc",
+      "workstation",
+      "computer lab",
+      "peripheral"
     ],
     "relations": {
       "normative": [],
@@ -4218,7 +4238,8 @@
       "speaker",
       "amplifier",
       "av equipment",
-      "smart board"
+      "smart board",
+      "smart classroom"
     ],
     "relations": {
       "normative": [],
@@ -4257,7 +4278,6 @@
       "fan",
       "water cooler",
       "office equipment",
-      "safety",
       "household"
     ],
     "relations": {

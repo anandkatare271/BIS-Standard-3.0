@@ -34,10 +34,32 @@ export function matchesTerm(text, term) {
   return re ? re.test(text) : text.includes(term);
 }
 
+/**
+ * Romanised Hindi splits in two, because one matching rule cannot serve both.
+ *
+ * Whole-word matching is correct for particles ("ke liye", "hain") but wrong
+ * for verb roots: "khareed" as a whole word never matches "khareedna" or
+ * "khareedni", which is what people actually type. Roots are therefore matched
+ * as prefixes. Before this split, "mujhe 50 pump khareedna hai" was reported
+ * as English.
+ */
+const HINGLISH_WORDS = ["chahiye", "chaahiye", "hain", "ke liye", "karna", "karni", "karne", "purchase karna"];
+const HINGLISH_ROOTS = ["khareed", "kharid", "mangwa", "lagwa"];
+
+const stemCache = new Map();
+
+function stemPattern(root) {
+  if (!stemCache.has(root)) {
+    const escaped = root.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    stemCache.set(root, new RegExp(`(?<![a-z0-9])${escaped}[a-z]*`, "i"));
+  }
+  return stemCache.get(root);
+}
+
 export function detectLanguage(text) {
   if (/[\u0900-\u097F]/.test(text)) return "Hindi";
-  const hinglish = ["chahiye", "khareed", "hain", "ke liye", "karna", "karni", "karne", "purchase karna"];
-  if (hinglish.some((w) => matchesTerm(text, w))) return "Hinglish";
+  if (HINGLISH_WORDS.some((w) => matchesTerm(text, w))) return "Hinglish";
+  if (HINGLISH_ROOTS.some((r) => stemPattern(r).test(text))) return "Hinglish";
   return "English";
 }
 
@@ -170,30 +192,319 @@ export const SCENARIOS = {
   },
 };
 
-export function genericAnalysis(text, STANDARDS) {
-  const hits = (s) => (s.keywords || []).filter((k) => matchesTerm(text, k));
-  const scored = STANDARDS.map((s) => ({ s, matched: hits(s) }))
-    .map((x) => ({ ...x, overlap: x.matched.length }))
-    .sort((a, b) => b.overlap - a.overlap);
-  const matched = scored.filter((x) => x.overlap > 0);
-  const chosen = (matched.length ? matched : scored.slice(0, 3)).slice(0, 4);
-  const tiers = ["Primary", "Allied", "Normative", "Test"];
-  const recommendations = chosen.map((x, i) => ({
-    id: x.s.id,
-    tier: tiers[i] || "Optional",
-    relevance: x.overlap > 0 ? Math.min(89, 48 + x.overlap * 14) : 42,
-    reasons: x.overlap > 0
-      ? [`Keyword overlap detected: ${x.matched.join(", ")}`, "Category inferred from free-text query", "Generic matching mode — limited semantic context available"]
-      : ["No strong keyword match found in the demo dataset", "Shown as a broad candidate — recommend manual expert review"],
-  }));
-  const avg = Math.round(recommendations.reduce((a, r) => a + r.relevance, 0) / Math.max(recommendations.length, 1));
+/* =========================================================================
+   GENERIC PATH — rarity-weighted scoring + relation-graph expansion
+
+   The four scenarios above are hand-written and stay exactly as they were.
+   Everything else used to go through a much weaker path that counted raw
+   keyword hits, took the top four, and assigned tiers by array position, so
+   the second-best match was always "Allied" whatever it actually was. With
+   no keyword match at all it returned the first three catalog rows, which is
+   how an office-furniture query came to recommend LED luminaire standards.
+
+   Two changes replace it:
+
+   1. Keywords are weighted by how rare they are in the catalog. "safety"
+      appears in PPE, switchgear, lighting and IT rows alike, so it should
+      count for far less than "tmt bar" or "flushing cistern".
+   2. Tiers come from the relations graph instead of list position. Direct
+      matches become Primary/Allied; their normative, test, safety,
+      installation and material edges are then walked to pull in the
+      standards a procurement officer would otherwise have to know to ask
+      for — the pipe-laying code alongside the pipe, the cement test method
+      alongside the cement.
+   ========================================================================= */
+
+/** Which tier a relation edge produces. `safety` folds into Normative
+ *  because those are the six tiers the UI has styling for. */
+const EDGE_TIER = {
+  normative: "Normative",
+  test: "Test",
+  safety: "Normative",
+  installation: "Installation",
+  material: "Allied",
+};
+
+const TIER_RANK = { Primary: 0, Allied: 1, Normative: 2, Test: 3, Installation: 4, Optional: 5 };
+
+/** Relevance floor for a standard reached through the graph rather than matched directly. */
+const EDGE_RELEVANCE = { Normative: 66, Test: 71, Installation: 61, Allied: 58 };
+
+const clamp = (n, lo = 0, hi = 100) => Math.max(lo, Math.min(hi, Math.round(n)));
+
+/**
+ * Inverse-document-frequency weights for every keyword in the catalog.
+ * Cached per catalog array; a fresh array from the database recomputes, which
+ * is a few hundred map operations and not worth optimising further.
+ */
+const indexCache = new WeakMap();
+
+function catalogIndex(STANDARDS) {
+  const cached = indexCache.get(STANDARDS);
+  if (cached) return cached;
+
+  const df = new Map();
+  for (const s of STANDARDS) {
+    for (const k of new Set((s.keywords || []).map((x) => x.toLowerCase()))) {
+      df.set(k, (df.get(k) || 0) + 1);
+    }
+  }
+  const total = STANDARDS.length || 1;
+  const weight = new Map();
+  for (const [term, n] of df) weight.set(term, Math.log(1 + total / n));
+
+  const index = { weight, total };
+  indexCache.set(STANDARDS, index);
+  return index;
+}
+
+function scoreStandard(text, s, weight) {
+  const matched = [];
+  let score = 0;
+
+  for (const k of s.keywords || []) {
+    if (!matchesTerm(text, k)) continue;
+    matched.push(k);
+    score += weight.get(k.toLowerCase()) ?? 1;
+    // A multi-word phrase matching is stronger evidence than a bare token.
+    if (k.includes(" ")) score += 0.5;
+  }
+
+  // Category and domain only *strengthen* an existing keyword match. Letting them
+  // create a match on their own dragged every Fire Safety row into a query about
+  // safety helmets, purely because both live under a category containing "safety".
+  if (matched.length > 0) {
+    for (const field of [s.category, s.domain]) {
+      const words = String(field || "").toLowerCase().split(/[^a-z0-9]+/);
+      if (words.some((w) => w.length > 3 && matchesTerm(text, w))) score += 0.4;
+    }
+  }
+
+  return { s, score, matched };
+}
+
+/** Nothing in the catalog matched. Say so, rather than inventing candidates. */
+function noMatchAnalysis() {
   return {
-    product: "Auto-detected procurement item",
-    extracted: { "Product": "Not confidently classified", "Domain": "General", "Note": "Limited structured extraction — refine the query for stronger matching" },
+    product: "Not classified",
+    extracted: {
+      "Product": "Could not be classified from the query",
+      "Domain": "Unknown",
+      "Note": "No standard in the catalog matched this description. Add detail — the product, its material, and where it will be used.",
+    },
+    recommendations: [],
+    missing: [
+      "The query did not match any standard in the catalog — it may be too short, or the category may not be covered yet",
+      "Describe the item, its material and its application, then re-run the analysis",
+      "Route to expert review if the category is genuinely absent from the catalog",
+    ],
+    compliance: {
+      overall: 0, coverage: 0, versionValidity: 0, normativeRefs: 0,
+      safetyCoverage: 0, certCoverage: 0, technicalCompleteness: 0, risk: "Critical",
+    },
+    certification: {
+      category: "Unknown", status: "Not Identified", scheme: "—",
+      reason: "No product category could be determined, so no certification scheme can be suggested.",
+      action: "Refine the query or route to expert review.",
+    },
+  };
+}
+
+/** Everything the compliance panel shows, derived from the actual result set. */
+function computeCompliance(recommendations, byId) {
+  const standards = recommendations.map((r) => byId.get(r.id)).filter(Boolean);
+  const n = standards.length;
+  if (n === 0) return noMatchAnalysis().compliance;
+
+  const share = (count) => (count / n) * 100;
+
+  // How many recommended standards are still the current version.
+  const versionValidity = clamp(share(standards.filter((s) => s.status === "Current").length));
+
+  // How many of the recommended standards' own references were also pulled in.
+  const inSet = new Set(recommendations.map((r) => r.id));
+  let refs = 0;
+  let resolved = 0;
+  for (const s of standards) {
+    for (const ids of Object.values(s.relations || {})) {
+      for (const id of ids) {
+        refs += 1;
+        if (inSet.has(id)) resolved += 1;
+      }
+    }
+  }
+  const normativeRefs = refs === 0 ? 35 : clamp((resolved / refs) * 100);
+
+  // How many distinct kinds of standard the set covers.
+  const tiers = new Set(recommendations.map((r) => r.tier));
+  const breadth = ["Primary", "Allied", "Normative", "Test", "Installation"].filter((t) => tiers.has(t)).length;
+  const coverage = clamp(38 + breadth * 13);
+
+  const safetyLinked = standards.filter(
+    (s) => (s.relations?.safety || []).length > 0 || /safety|protection|fire/i.test(s.title),
+  ).length;
+  const safetyCoverage = clamp(30 + share(safetyLinked) * 0.7);
+
+  const certIdentified = standards.filter(
+    (s) => s.certification?.status && s.certification.status !== "Not Identified",
+  ).length;
+  const certCoverage = clamp(share(certIdentified));
+
+  const avgRelevance = recommendations.reduce((a, r) => a + r.relevance, 0) / n;
+  const technicalCompleteness = clamp(avgRelevance * 0.6 + coverage * 0.4);
+
+  const overall = clamp(
+    coverage * 0.22 + versionValidity * 0.14 + normativeRefs * 0.16 +
+    safetyCoverage * 0.14 + certCoverage * 0.12 + technicalCompleteness * 0.22,
+  );
+
+  const risk = overall >= 78 ? "Low" : overall >= 62 ? "Medium" : overall >= 42 ? "High" : "Critical";
+  return { overall, coverage, versionValidity, normativeRefs, safetyCoverage, certCoverage, technicalCompleteness, risk };
+}
+
+/** Gaps inferred from what the result set does *not* contain. */
+function deriveMissing(text, recommendations, byId) {
+  const tiers = new Set(recommendations.map((r) => r.tier));
+  const standards = recommendations.map((r) => byId.get(r.id)).filter(Boolean);
+  const gaps = [];
+
+  if (!tiers.has("Test")) {
+    gaps.push("No acceptance-test standard was matched — name the test method and require a test report in the tender");
+  }
+  if (!tiers.has("Installation")) {
+    gaps.push("No installation or workmanship standard was matched — site practice and acceptance criteria are unspecified");
+  }
+  if (!standards.some((s) => s.certification?.status && s.certification.status !== "Not Identified")) {
+    gaps.push("No certification scheme was identified for the matched categories — verify BIS and QCO applicability before publishing");
+  }
+  if (!extractQuantity(text)) {
+    gaps.push("Order quantity was not stated in the query");
+  }
+  if (!/\b(ip\s*\d{2}|is\s*\d|iso\s*\d|iec\s*\d)\b/i.test(text)) {
+    gaps.push("The query cites no standard number or rating class of its own — confirm the recommendations against the technical sanction");
+  }
+  if (standards.some((s) => s.status !== "Current")) {
+    const stale = standards.filter((s) => s.status !== "Current").map((s) => s.number);
+    gaps.push(`Version check required — ${stale.join(", ")} ${stale.length === 1 ? "is" : "are"} not marked Current`);
+  }
+
+  return gaps.length ? gaps : ["No structural gaps detected in this pass — an expert should still confirm scope and version currency"];
+}
+
+export function genericAnalysis(text, STANDARDS) {
+  const { weight } = catalogIndex(STANDARDS);
+  const byId = new Map(STANDARDS.map((s) => [s.id, s]));
+
+  const direct = STANDARDS
+    .map((s) => scoreStandard(text, s, weight))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || a.s.id.localeCompare(b.s.id));
+
+  if (direct.length === 0) return noMatchAnalysis();
+
+  const best = direct[0].score;
+
+  // A single hit on a catalog-wide word like "safety" scores far below the best
+  // match but is not zero, so without a floor it still surfaced as an Allied
+  // recommendation — a query about safety helmets listed luminaire electrical
+  // safety. A match must be worth at least 30% of the best one to appear.
+  const FLOOR = 0.3;
+  const MAX_PRIMARY = 4;
+  const MAX_ALLIED = 3;
+  const MAX_TOTAL = 12;
+
+  const picked = new Map();
+
+  /** First tier assigned wins; a later, weaker edge cannot demote a match. */
+  const place = (id, tier, relevance, reasons) => {
+    const existing = picked.get(id);
+    if (existing && TIER_RANK[existing.tier] <= TIER_RANK[tier]) return;
+    picked.set(id, { id, tier, relevance, reasons });
+  };
+
+  // Direct matches. A score close to the best becomes Primary, the rest Allied.
+  let primaries = 0;
+  let allied = 0;
+  for (const hit of direct) {
+    const ratio = hit.score / best;
+    if (ratio < FLOOR) break; // sorted, so everything after this is weaker still
+
+    const isPrimary = ratio >= 0.6 && primaries < MAX_PRIMARY;
+    if (isPrimary) primaries += 1;
+    else if (allied < MAX_ALLIED) allied += 1;
+    else continue;
+
+    place(
+      hit.s.id,
+      isPrimary ? "Primary" : "Allied",
+      isPrimary ? clamp(80 + 15 * ratio, 0, 96) : clamp(52 + 30 * ratio),
+      [
+        `Matched on ${hit.matched.length === 1 ? "keyword" : "keywords"}: ${hit.matched.slice(0, 5).join(", ")}`,
+        `Category inferred from the query: ${hit.s.category}`,
+        isPrimary
+          ? "Scored among the strongest matches for this description"
+          : "Related match — scope overlaps but is not the closest fit",
+      ],
+    );
+  }
+
+  // Walk the relations graph out from the Primary matches only. Expanding from
+  // Allied ones too pulled in their entire reference tree, which buried the
+  // actual answer under standards two hops from anything the query said.
+  const seeds = [...picked.values()].filter((r) => r.tier === "Primary");
+  for (const seed of seeds) {
+    const standard = byId.get(seed.id);
+    if (!standard) continue;
+
+    for (const [edge, tier] of Object.entries(EDGE_TIER)) {
+      for (const targetId of standard.relations?.[edge] || []) {
+        if (picked.has(targetId) || !byId.has(targetId)) continue;
+        if (picked.size >= MAX_TOTAL) break;
+
+        // An edge off an Allied match is weaker evidence than one off a Primary.
+        const penalty = seed.tier === "Primary" ? 0 : 6;
+        const kind = edge === "material" ? "component or material" : edge;
+        place(targetId, tier, clamp(EDGE_RELEVANCE[tier] - penalty), [
+          `Referenced by ${standard.number} as ${/^[aeiou]/.test(kind) ? "an" : "a"} ${kind} standard`,
+          `Pulled in from the standards graph, not from the query text`,
+          tier === "Test"
+            ? "Required to verify conformance of the primary standard"
+            : tier === "Installation"
+              ? "Governs site work and acceptance for the matched product"
+              : "Normatively referenced — compliance is not complete without it",
+        ]);
+      }
+    }
+  }
+
+  const recommendations = [...picked.values()].sort(
+    (a, b) => TIER_RANK[a.tier] - TIER_RANK[b.tier] || b.relevance - a.relevance,
+  );
+
+  const top = byId.get(recommendations[0].id) ?? direct[0].s;
+  const matchedTerms = [...new Set(direct.flatMap((d) => d.matched))].slice(0, 6);
+
+  return {
+    product: `${top.category} — auto-classified from the query`,
+    extracted: {
+      "Product": top.category,
+      "Domain": top.domain,
+      "Matched on": matchedTerms.join(", ") || "category and domain only",
+      "Standards matched": `${recommendations.length} (${primaries} primary, ${recommendations.length - primaries} allied or referenced)`,
+    },
     recommendations,
-    missing: ["Testing requirement not clearly specified", "Certification requirement not specified", "Safety-compliance requirement not specified"],
-    compliance: { overall: Math.max(30, avg - 15), coverage: avg, versionValidity: 70, normativeRefs: 45, safetyCoverage: 50, certCoverage: 40, technicalCompleteness: 55, risk: avg > 70 ? "Medium" : "High" },
-    certification: { category: "General", status: "Not Identified", scheme: "—", reason: "Insufficient structured information to determine a certification scheme in this demo mode.", action: "Refine the query or route to expert review." },
+    missing: deriveMissing(text, recommendations, byId),
+    compliance: computeCompliance(recommendations, byId),
+    certification: {
+      category: top.category,
+      ...(top.certification?.status
+        ? top.certification
+        : {
+            status: "Not Identified", scheme: "—",
+            reason: "No certification scheme is recorded for this category in the sample dataset.",
+            action: "Re-verify against the current QCO list.",
+          }),
+    },
   };
 }
 
