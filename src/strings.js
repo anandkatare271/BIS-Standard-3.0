@@ -84,6 +84,19 @@ export const STR = {
     conflictsDetected: "Conflicts detected",
     conflictsBody: "No direct scope conflicts were detected between the matched standards in this pass. Standards with overlapping scope are shown together in",
     forExpertReview: "for expert review.",
+
+    /* tender audit */
+    auditVerdict: "Tender audit",
+    auditCited: "Cited",
+    auditRecognised: "Recognised",
+    auditOmitted: "Not cited",
+    auditConflicts: "Conflicts",
+    auditCitedPanel: "Standards cited in this tender",
+    auditNoCitations: "This tender cites no Indian Standard. A tender that names no standard cannot be evaluated against one, and bidders are free to supply any quality.",
+    auditOmittedPanel: "Applicable but not cited",
+    auditNothingOmitted: "Every applicable standard identified is already cited in the tender.",
+    auditSupporting: "Supporting standards also worth citing:",
+    auditNoConflicts: "No overlapping or contradictory standards were found among the matches.",
     viewFullCompliance: "View full compliance score →",
 
     /* search */
@@ -261,6 +274,19 @@ export const STR = {
     conflictsDetected: "पाए गए विरोध",
     conflictsBody: "इस चरण में मिले मानकों के बीच कार्यक्षेत्र का कोई सीधा विरोध नहीं पाया गया। समान कार्यक्षेत्र वाले मानक एक साथ यहाँ दिखाए गए हैं:",
     forExpertReview: "— विशेषज्ञ समीक्षा हेतु।",
+
+    /* tender audit */
+    auditVerdict: "निविदा अंकेक्षण",
+    auditCited: "उद्धृत",
+    auditRecognised: "पहचाने गए",
+    auditOmitted: "उद्धृत नहीं",
+    auditConflicts: "विरोध",
+    auditCitedPanel: "इस निविदा में उद्धृत मानक",
+    auditNoCitations: "इस निविदा में किसी भारतीय मानक का उल्लेख नहीं है। जो निविदा किसी मानक का नाम नहीं लेती, उसका मूल्यांकन किसी मानक के आधार पर नहीं हो सकता और बोलीदाता कोई भी गुणवत्ता दे सकते हैं।",
+    auditOmittedPanel: "लागू, परंतु उद्धृत नहीं",
+    auditNothingOmitted: "पहचाने गए सभी लागू मानक निविदा में पहले से उद्धृत हैं।",
+    auditSupporting: "सहायक मानक जिन्हें उद्धृत करना उचित है:",
+    auditNoConflicts: "मिले हुए मानकों में कोई अतिव्यापी या परस्पर विरोधी मानक नहीं पाया गया।",
     viewFullCompliance: "पूर्ण अनुपालन स्कोर देखें →",
 
     /* search */

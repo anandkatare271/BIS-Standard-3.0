@@ -24,6 +24,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import crypto from "node:crypto";
+import { auditTender } from "../shared/audit.js";
 
 const MODEL = "claude-opus-5";
 
@@ -56,7 +57,11 @@ const FacetSchema = z.object({
   application: z.string().describe("Where or how it will be used. Empty string otherwise."),
   environment: z.string().describe("Installation environment, e.g. outdoor, buried, indoor. Empty string otherwise."),
   quantity: z.string().describe("Order quantity as written, digits only. Empty string if not stated."),
-  citedStandards: z.array(z.string()).describe("Any IS/ISO/IEC numbers the text itself cites."),
+  citedStandards: z.array(z.string()).describe(
+    "Every Indian Standard, ISO or IEC number the text cites, exactly as written. " +
+    "Include ones written in prose or with unusual spacing, and ones cited in tables " +
+    "or annexures. Empty array if the text cites none.",
+  ),
   searchTerms: z.array(z.string()).describe(
     "3 to 10 terms taken from the supplied catalog vocabulary that best describe this item. " +
     "Use the vocabulary's exact wording. Do not invent terms that are not in it.",
@@ -284,6 +289,10 @@ export async function analyzeWithAI(text, catalog, runAnalysis) {
       query: text,
       recommendations,
       extracted: { ...facetFields, ...analysis.extracted },
+      // Recompute the tender audit with the citations the model found. The
+      // regex catches "IS 456:2000"; the model also catches the ones written
+      // into prose, tables and annexures that a pattern cannot reach.
+      audit: auditTender(text, recommendations, catalog, facets.citedStandards || []),
       mode: "ai",
       aiSummary: output.summary,
       facets,

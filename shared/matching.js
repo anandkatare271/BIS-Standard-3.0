@@ -1,3 +1,5 @@
+import { auditTender } from "./audit.js";
+
 /**
  * Original IS-Match AI scenario engine — preserved from IS-Match-AI_1.jsx.
  * Catalog is injected so the same matching logic can run against the database.
@@ -527,6 +529,10 @@ export function runAnalysis(rawText, STANDARDS) {
     missing: base.missing,
     compliance: base.compliance,
     certification: base.certification,
+    // Additive: checks the standards the text itself cites. The Tender page
+    // renders this; every other page ignores it. The AI path recomputes it with
+    // the citations the model found in prose that the regex cannot catch.
+    audit: auditTender(rawText, recommendations, STANDARDS),
     timestamp: new Date().toLocaleString("en-IN"),
   };
 }

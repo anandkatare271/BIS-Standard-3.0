@@ -765,40 +765,177 @@ function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go, busy, 
         </button>
       </Panel>
 
-      {analysis && (
-        <div className="mt-6 grid md:grid-cols-2 gap-4">
-          <Panel title={t.missingStandards} icon={AlertTriangle}>
-            <ul className="space-y-2 text-sm">
-              {analysis.missing.map((m, i) => (
-                <li key={i} className="flex gap-2"><AlertTriangle size={14} className="text-orange-500 mt-0.5 shrink-0" />{m}</li>
+      {analysis && <TenderAudit analysis={analysis} go={go} />}
+    </div>
+  );
+}
+
+/**
+ * The tender audit result.
+ *
+ * Replaces three panels that could not tell an officer anything: the analyzer's
+ * generic gap list, an "outdated references" panel that filtered
+ * recommendations for Superseded status (2 of 113 rows qualify, so it reported
+ * none almost always), and a "conflicts detected" panel whose text was
+ * hardcoded. This renders shared/audit.js, which actually checks the standards
+ * the document cites.
+ */
+const SEVERITY = {
+  error: { row: "border-rose-300 bg-rose-50", chip: "bg-rose-600", Icon: XCircle },
+  warn: { row: "border-amber-300 bg-amber-50", chip: "bg-amber-500", Icon: AlertTriangle },
+  info: { row: "border-slate-300 bg-slate-50", chip: "bg-slate-400", Icon: Info },
+  ok: { row: "border-emerald-300 bg-emerald-50", chip: "bg-emerald-600", Icon: CheckCircle2 },
+};
+
+const VERDICT_BANNER = {
+  error: "border-rose-300 bg-rose-50 text-rose-900",
+  warn: "border-amber-300 bg-amber-50 text-amber-900",
+  ok: "border-emerald-300 bg-emerald-50 text-emerald-900",
+  info: "border-slate-300 bg-slate-50 text-slate-800",
+};
+
+function AuditRow({ severity, primary, secondary, note }) {
+  const style = SEVERITY[severity] || SEVERITY.info;
+  const Icon = style.Icon;
+  return (
+    <li className={`border rounded p-2.5 ${style.row}`}>
+      <div className="flex items-start gap-2">
+        <Icon size={14} className="shrink-0 mt-0.5" />
+        <div className="min-w-0">
+          <div className="font-mono text-xs font-semibold">{primary}</div>
+          {secondary && <div className="text-slate-700 text-sm leading-snug">{secondary}</div>}
+          <div className="text-xs text-slate-600 mt-0.5">{note}</div>
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function TenderAudit({ analysis, go }) {
+  const t = useT();
+  const audit = analysis.audit;
+
+  // Older saved analyses predate the audit field. Fall back rather than crash.
+  if (!audit) {
+    return (
+      <div className="mt-6">
+        <Panel title={t.missingStandards} icon={AlertTriangle}>
+          <ul className="space-y-2 text-sm">
+            {(analysis.missing || []).map((m, i) => (
+              <li key={i} className="flex gap-2"><AlertTriangle size={14} className="text-orange-500 mt-0.5 shrink-0" />{m}</li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+    );
+  }
+
+  const governing = audit.omitted.filter((o) => o.severity === "error");
+  const supporting = audit.omitted.filter((o) => o.severity !== "error");
+
+  return (
+    <div className="mt-6 space-y-4">
+      <div className={`border rounded-md p-4 ${VERDICT_BANNER[audit.verdict.level] || VERDICT_BANNER.info}`}>
+        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide mb-1">
+          <ShieldCheck size={14} /> {t.auditVerdict}
+        </div>
+        <p className="text-sm font-medium">{audit.verdict.headline}</p>
+        <div className="flex flex-wrap gap-4 mt-2 text-xs">
+          <span>{t.auditCited}: <span className="font-mono font-semibold">{audit.citedCount}</span></span>
+          <span>{t.auditRecognised}: <span className="font-mono font-semibold">{audit.recognised}</span></span>
+          <span>{t.auditOmitted}: <span className="font-mono font-semibold">{audit.omitted.length}</span></span>
+          <span>{t.auditConflicts}: <span className="font-mono font-semibold">{audit.conflicts.length}</span></span>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <Panel title={t.auditCitedPanel} icon={FileText}>
+          {audit.cited.length === 0 ? (
+            <p className="text-sm text-rose-700 flex items-start gap-2">
+              <XCircle size={15} className="shrink-0 mt-0.5" /> {t.auditNoCitations}
+            </p>
+          ) : (
+            <ul className="space-y-2">
+              {audit.cited.map((c, i) => (
+                <AuditRow
+                  key={i}
+                  severity={c.severity}
+                  primary={c.number ? `${c.raw} → ${c.number}` : c.raw}
+                  secondary={c.title}
+                  note={c.note}
+                />
               ))}
             </ul>
-          </Panel>
-          <Panel title={t.outdatedReferences} icon={History}>
-            {analysis.recommendations.filter((r) => byId(r.id).status === "Superseded").length === 0 ? (
-              <p className="text-sm text-emerald-700 flex items-center gap-2"><CheckCircle2 size={15} /> No outdated references detected among matched standards.</p>
-            ) : (
-              <ul className="space-y-3 text-sm">
-                {analysis.recommendations.filter((r) => byId(r.id).status === "Superseded").map((r) => {
-                  const s = byId(r.id);
-                  return (
-                    <li key={s.id} className="border border-amber-200 bg-amber-50 rounded p-2.5">
-                      <div className="font-mono text-xs text-amber-800">{s.number} — flagged as {s.status}</div>
-                      <div className="text-slate-700">Latest available version: <span className="font-medium">{s.latestVersion}</span></div>
-                    </li>
-                  );
-                })}
+          )}
+        </Panel>
+
+        <Panel title={t.auditOmittedPanel} icon={AlertTriangle}>
+          {audit.omitted.length === 0 ? (
+            <p className="text-sm text-emerald-700 flex items-center gap-2">
+              <CheckCircle2 size={15} /> {t.auditNothingOmitted}
+            </p>
+          ) : (
+            <>
+              <ul className="space-y-2">
+                {governing.map((o) => (
+                  <AuditRow key={o.standardId} severity={o.severity} primary={o.number} secondary={o.title} note={o.note} />
+                ))}
               </ul>
-            )}
-          </Panel>
-          <Panel title={t.conflictsDetected} icon={AlertTriangle} className="md:col-span-2">
-            <p className="text-sm text-slate-600">{t.conflictsBody} <button onClick={() => go("allied")} className="text-amber-700 underline">{t.alliedTitle}</button> {t.forExpertReview}</p>
-          </Panel>
-          <div className="md:col-span-2 flex justify-end">
-            <button onClick={() => go("compliance")} className="px-4 py-2 bg-amber-600 text-white rounded text-sm font-medium hover:bg-amber-500">{t.viewFullCompliance}</button>
-          </div>
-        </div>
+              {supporting.length > 0 && (
+                <>
+                  <p className="text-xs text-slate-500 mt-3 mb-1.5">{t.auditSupporting}</p>
+                  <ul className="space-y-1.5">
+                    {supporting.map((o) => (
+                      <li key={o.standardId} className="flex items-start gap-2 text-sm">
+                        <TierBadge tier={o.tier} />
+                        <span className="font-mono text-xs pt-0.5">{o.number}</span>
+                        <span className="text-slate-600 text-xs pt-0.5 truncate">{o.title}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </>
+          )}
+        </Panel>
+      </div>
+
+      <Panel title={t.conflictsDetected} icon={GitBranch}>
+        {audit.conflicts.length === 0 ? (
+          <p className="text-sm text-emerald-700 flex items-center gap-2">
+            <CheckCircle2 size={15} /> {t.auditNoConflicts}
+          </p>
+        ) : (
+          <ul className="space-y-2">
+            {audit.conflicts.map((c, i) => (
+              <AuditRow
+                key={i}
+                severity={c.severity}
+                primary={c.b ? `${c.a.number}  ↔  ${c.b.number}` : c.a.number}
+                secondary={c.b ? `${c.a.title} / ${c.b.title}` : c.a.title}
+                note={c.note}
+              />
+            ))}
+          </ul>
+        )}
+      </Panel>
+
+      {(analysis.missing || []).length > 0 && (
+        <Panel title={t.potentialMissing} icon={Info}>
+          <ul className="space-y-1.5 text-sm">
+            {analysis.missing.map((m, i) => (
+              <li key={i} className="flex gap-2 text-slate-600">
+                <Info size={13} className="text-slate-400 mt-1 shrink-0" />{m}
+              </li>
+            ))}
+          </ul>
+        </Panel>
       )}
+
+      <div className="flex justify-end gap-2">
+        <button onClick={() => go("recommendations")} className="px-4 py-2 border border-slate-300 rounded text-sm font-medium hover:bg-slate-50">{t.viewRecs}</button>
+        <button onClick={() => go("compliance")} className="px-4 py-2 bg-amber-600 text-white rounded text-sm font-medium hover:bg-amber-500">{t.viewFullCompliance}</button>
+      </div>
     </div>
   );
 }
