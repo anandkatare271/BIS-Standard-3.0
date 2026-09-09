@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import multer from "multer";
 import path from "node:path";
+import { timingSafeEqual } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import {
   seedIfEmpty,
@@ -69,9 +70,39 @@ app.get("/api/standards/:id", route((req, res) => {
   res.json(row);
 }));
 
+/**
+ * Write protection for the catalog.
+ *
+ * Reads stay open, so the demo needs no login. Catalog writes do not: on a
+ * public URL, PUT /api/standards/:id let anyone rewrite the standards the
+ * recommendations are built from, and the Officer/Expert/Admin selector in the
+ * UI is presentation only and never reached the server.
+ *
+ * With no ADMIN_TOKEN set the gate stays open and says so at startup, so
+ * local development is unchanged.
+ */
+const adminToken = process.env.ADMIN_TOKEN || "";
+
+/** Constant-time compare so the token cannot be recovered by timing. */
+function tokenMatches(supplied) {
+  const a = Buffer.from(String(supplied || ""));
+  const b = Buffer.from(adminToken);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+const requireAdmin = (req, res, next) => {
+  if (!adminToken) return next();
+  const header = req.get("authorization") || "";
+  const supplied = header.startsWith("Bearer ") ? header.slice(7) : req.get("x-admin-token");
+  if (!tokenMatches(supplied)) {
+    return res.status(401).json({ error: "This endpoint requires a valid admin token" });
+  }
+  return next();
+};
+
 const VALID_STATUSES = ["Current", "Superseded", "Under Revision", "Withdrawn"];
 
-app.put("/api/standards/:id", route((req, res) => {
+app.put("/api/standards/:id", requireAdmin, route((req, res) => {
   const existing = getStandard(req.params.id);
   if (!existing) return res.status(404).json({ error: "Standard not found" });
   const patch = req.body || {};
@@ -82,7 +113,7 @@ app.put("/api/standards/:id", route((req, res) => {
   res.json(getStandard(req.params.id));
 }));
 
-app.post("/api/seed", route((_req, res) => {
+app.post("/api/seed", requireAdmin, route((_req, res) => {
   const n = seedStandards();
   res.json({ ok: true, standards: n });
 }));
@@ -193,6 +224,11 @@ app.listen(port, () => {
     ai.configured
       ? `AI path: ${ai.reason} (${ai.model}, ${ai.timeoutMs}ms timeout)`
       : `AI path: ${ai.reason} - analysis will use the rule-based engine`,
+  );
+  console.log(
+    adminToken
+      ? "Catalog writes: protected by ADMIN_TOKEN"
+      : "Catalog writes: OPEN - set ADMIN_TOKEN before exposing this on a public URL",
   );
   if (ai.configured && catalogSize > 0) prewarm(listStandards());
 });
