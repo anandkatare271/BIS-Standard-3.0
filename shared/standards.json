@@ -1,0 +1,651 @@
+[
+  {
+    "id": "SL01",
+    "number": "IS 10322 (Pt 5/Sec 1)",
+    "title": "Luminaires — General Safety Requirements",
+    "category": "Lighting",
+    "domain": "Electrical & Lighting",
+    "year": 2018,
+    "status": "Current",
+    "latestVersion": "IS 10322 (Pt 5/Sec 1):2018",
+    "amendments": [
+      "Amd 1:2021"
+    ],
+    "scope": "General safety construction requirements applicable to all classes of luminaires, including outdoor and street-lighting fixtures.",
+    "keywords": [
+      "led",
+      "luminaire",
+      "light",
+      "street light",
+      "lighting fixture",
+      "lamp",
+      "outdoor light",
+      "solar"
+    ],
+    "relations": {
+      "normative": [],
+      "test": [
+        "SL03"
+      ],
+      "safety": [
+        "SL05"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Compulsory Registration (Electronics & IT Goods)",
+      "reason": "Certain luminaire categories are notified under CRS depending on classification.",
+      "action": "Verify current CRS notification for the exact product category."
+    }
+  },
+  {
+    "id": "SL02",
+    "number": "IS 16101",
+    "title": "LED Luminaires for General Lighting — Performance Requirements",
+    "category": "Lighting",
+    "domain": "Electrical & Lighting",
+    "year": 2020,
+    "status": "Current",
+    "latestVersion": "IS 16101:2020",
+    "amendments": [],
+    "scope": "Photometric, electrical and thermal performance requirements specific to LED-based luminaires used for general and outdoor lighting.",
+    "keywords": [
+      "led",
+      "led luminaire",
+      "energy efficient",
+      "light output",
+      "street light",
+      "illumination"
+    ],
+    "relations": {
+      "normative": [
+        "SL01"
+      ],
+      "test": [
+        "SL03"
+      ],
+      "safety": [
+        "SL05"
+      ],
+      "installation": [],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Compulsory Registration (CRS)",
+      "reason": "LED lighting products are commonly notified under the CRS scheme.",
+      "action": "Confirm against the latest CRS product list before publishing the tender."
+    }
+  },
+  {
+    "id": "SL03",
+    "number": "IS 16106",
+    "title": "Method of Test for LED Luminaires — Photometric, Electrical & Thermal Characteristics",
+    "category": "Lighting",
+    "domain": "Test Method",
+    "year": 2013,
+    "status": "Superseded",
+    "latestVersion": "IS 16106:2021",
+    "amendments": [
+      "Amd 1:2023"
+    ],
+    "supersededNote": "The 2013 edition has been revised; the 2021 edition includes an updated thermal-stability test procedure.",
+    "scope": "Laboratory test methods for verifying luminous efficacy, colour rendering index and thermal stability of LED luminaires.",
+    "keywords": [
+      "photometric",
+      "test",
+      "led",
+      "illumination",
+      "light output",
+      "testing"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Test-method standard; not independently certifiable.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "SL04",
+    "number": "IS/IEC 60598-2-3",
+    "title": "Luminaires — Particular Requirements: Street Lighting Luminaires",
+    "category": "Lighting",
+    "domain": "Electrical & Lighting",
+    "year": 2015,
+    "status": "Current",
+    "latestVersion": "IS/IEC 60598-2-3:2015",
+    "amendments": [],
+    "scope": "Additional particular safety and performance requirements specific to luminaires intended for street and area lighting.",
+    "keywords": [
+      "street light",
+      "led",
+      "outdoor light",
+      "road lighting"
+    ],
+    "relations": {
+      "normative": [
+        "SL01"
+      ],
+      "test": [
+        "SL03"
+      ],
+      "safety": [
+        "SL05"
+      ],
+      "installation": [
+        "SL09"
+      ],
+      "material": []
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS CRS",
+      "reason": "Falls within the same product family typically covered by CRS.",
+      "action": "Verify applicability before finalising tender documents."
+    }
+  },
+  {
+    "id": "SL05",
+    "number": "IS 10322 (Pt 1)",
+    "title": "Luminaires — Safety of Electrical Construction",
+    "category": "Lighting",
+    "domain": "Electrical Safety",
+    "year": 2018,
+    "status": "Current",
+    "latestVersion": "IS 10322 (Pt 1):2018",
+    "amendments": [],
+    "scope": "Electrical safety requirements for the construction of luminaires, covering insulation, earthing and protection against electric shock.",
+    "keywords": [
+      "electrical safety",
+      "led",
+      "luminaire",
+      "safety"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Safety construction standard; assessed as part of the parent product certification.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "SL06",
+    "number": "IS 16620",
+    "title": "Solar Photovoltaic Street Lighting System — Specification",
+    "category": "Lighting",
+    "domain": "Renewable Energy",
+    "year": 2021,
+    "status": "Current",
+    "latestVersion": "IS 16620:2021",
+    "amendments": [],
+    "scope": "System-level specification for solar-powered street lighting including panel, battery, luminaire and controller integration.",
+    "keywords": [
+      "solar",
+      "solar powered",
+      "street light",
+      "led",
+      "rural",
+      "photovoltaic"
+    ],
+    "relations": {
+      "normative": [
+        "SL01"
+      ],
+      "test": [
+        "SL03"
+      ],
+      "safety": [
+        "SL05"
+      ],
+      "installation": [
+        "SL09"
+      ],
+      "material": [
+        "SL07"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "MNRE Empanelment / BIS CRS",
+      "reason": "Solar lighting systems may require MNRE-approved component lists in addition to BIS compliance.",
+      "action": "Verify current MNRE / BIS applicability for the specific system configuration."
+    }
+  },
+  {
+    "id": "SL07",
+    "number": "IS 16270",
+    "title": "Secondary Cells & Batteries for Solar Photovoltaic Lighting Systems",
+    "category": "Lighting",
+    "domain": "Energy Storage",
+    "year": 2021,
+    "status": "Current",
+    "latestVersion": "IS 16270:2021",
+    "amendments": [],
+    "scope": "Performance and safety requirements for batteries used in solar street-lighting and similar off-grid systems.",
+    "keywords": [
+      "battery",
+      "solar",
+      "backup",
+      "storage"
+    ],
+    "relations": {
+      "safety": [
+        "SL05"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS CRS",
+      "reason": "Battery cells for lighting applications may fall under compulsory registration.",
+      "action": "Verify current applicability."
+    }
+  },
+  {
+    "id": "SL08",
+    "number": "IS 4013",
+    "title": "Glossary of Terms Relating to Illuminating Engineering",
+    "category": "Lighting",
+    "domain": "Terminology",
+    "year": 1988,
+    "status": "Under Revision",
+    "latestVersion": "IS 4013 (under committee revision)",
+    "amendments": [],
+    "scope": "Standard terminology used across Indian lighting and illumination standards.",
+    "keywords": [
+      "terminology",
+      "glossary",
+      "lighting"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Terminology standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "SL09",
+    "number": "IS 2713 (Pt 1)",
+    "title": "Tubular Steel Poles — General Requirements (Street Lighting Poles)",
+    "category": "Lighting",
+    "domain": "Installation",
+    "year": 1980,
+    "status": "Current",
+    "latestVersion": "IS 2713 (Pt 1):1980 (Reaffirmed)",
+    "amendments": [],
+    "scope": "Design, material and dimensional requirements for tubular steel poles used for street-lighting installation.",
+    "keywords": [
+      "pole",
+      "installation",
+      "street light",
+      "mounting"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Structural component standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "SL10",
+    "number": "IS/IEC 60529",
+    "title": "Degrees of Protection Provided by Enclosures (IP Code)",
+    "category": "Lighting",
+    "domain": "Environmental Test",
+    "year": 2001,
+    "status": "Current",
+    "latestVersion": "IS/IEC 60529:2001",
+    "amendments": [],
+    "scope": "Classification and test methods for the degree of protection of electrical enclosures against dust and water ingress — relevant for outdoor, weather-exposed equipment.",
+    "keywords": [
+      "ip rating",
+      "weather resistant",
+      "outdoor",
+      "ingress protection",
+      "enclosure"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Environmental test-method standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "WT01",
+    "number": "IS 13049",
+    "title": "Stainless Steel Water Storage Tanks — Specification",
+    "category": "Water Storage",
+    "domain": "Water Infrastructure",
+    "year": 1991,
+    "status": "Superseded",
+    "latestVersion": "IS 13049:2015",
+    "amendments": [
+      "Amd 1:2019"
+    ],
+    "supersededNote": "The 1991 edition has been revised; the 2015 edition updates sheet-thickness and joint requirements.",
+    "scope": "Material, fabrication and dimensional requirements for stainless-steel water storage tanks.",
+    "keywords": [
+      "water tank",
+      "storage tank",
+      "stainless steel",
+      "tank"
+    ],
+    "relations": {
+      "normative": [
+        "WT02"
+      ],
+      "test": [
+        "WT04"
+      ],
+      "material": [
+        "WT03"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Product Certification (ISI Mark)",
+      "reason": "Certain tank capacities/materials may fall under mandatory ISI marking.",
+      "action": "Confirm the applicable QCO / ISI-mark notification for this tank category."
+    }
+  },
+  {
+    "id": "WT02",
+    "number": "IS 10500",
+    "title": "Drinking Water — Specification",
+    "category": "Water Storage",
+    "domain": "Water Quality",
+    "year": 2012,
+    "status": "Current",
+    "latestVersion": "IS 10500:2012",
+    "amendments": [],
+    "scope": "Acceptable and permissible limits for physical, chemical and biological parameters of drinking water — relevant to potable-water storage applications.",
+    "keywords": [
+      "potable water",
+      "drinking water",
+      "water quality",
+      "water tank"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Water-quality standard, not a product certification.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "WT03",
+    "number": "IS 4736",
+    "title": "Hot-Dip Zinc Coating on Mild Steel Tubes — Specification",
+    "category": "Water Storage",
+    "domain": "Material / Coating",
+    "year": 1986,
+    "status": "Current",
+    "latestVersion": "IS 4736:1986 (Reaffirmed)",
+    "amendments": [],
+    "scope": "Coating specification for corrosion protection of steel components used in water-storage and allied structures.",
+    "keywords": [
+      "coating",
+      "corrosion",
+      "steel",
+      "tank"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Material coating standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "WT04",
+    "number": "IS 3025",
+    "title": "Methods of Sampling & Test (Physical & Chemical) for Water & Wastewater",
+    "category": "Water Storage",
+    "domain": "Test Method",
+    "year": 2019,
+    "status": "Current",
+    "latestVersion": "IS 3025 (relevant parts):2019",
+    "amendments": [],
+    "scope": "Test methods for sampling and analysing water quality parameters.",
+    "keywords": [
+      "water test",
+      "sampling",
+      "quality test"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Test-method standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "FD01",
+    "number": "IS 3614 (Pt 2)",
+    "title": "Fire Check Doors — Specification: Metal Doors",
+    "category": "Fire Safety",
+    "domain": "Fire & Life Safety",
+    "year": 1992,
+    "status": "Current",
+    "latestVersion": "IS 3614 (Pt 2):1992 (Reaffirmed)",
+    "amendments": [],
+    "scope": "Construction, material and performance requirements for metal fire check doors used in institutional and public buildings.",
+    "keywords": [
+      "fire door",
+      "fire resistant door",
+      "fire check door",
+      "metal door"
+    ],
+    "relations": {
+      "normative": [
+        "FD04"
+      ],
+      "test": [
+        "FD03"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "Fire (Life Safety) NOC + BIS Certification",
+      "reason": "Fire doors in public/educational buildings are typically subject to state fire regulations in addition to IS compliance.",
+      "action": "Verify applicable state Fire NOC requirements alongside IS compliance."
+    }
+  },
+  {
+    "id": "FD02",
+    "number": "IS 3614 (Pt 1)",
+    "title": "Fire Check Doors — Specification: Timber Doors",
+    "category": "Fire Safety",
+    "domain": "Fire & Life Safety",
+    "year": 1966,
+    "status": "Under Revision",
+    "latestVersion": "IS 3614 (Pt 1) — committee revision in progress",
+    "amendments": [],
+    "scope": "Construction and performance requirements for timber fire check doors.",
+    "keywords": [
+      "fire door",
+      "fire resistant door",
+      "timber door"
+    ],
+    "relations": {
+      "test": [
+        "FD03"
+      ]
+    },
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "Fire NOC + BIS",
+      "reason": "Same regulatory basis as metal fire doors.",
+      "action": "Verify state fire regulation applicability."
+    }
+  },
+  {
+    "id": "FD03",
+    "number": "IS 12458",
+    "title": "Fire Resistance Test for Door Assemblies — Method of Test",
+    "category": "Fire Safety",
+    "domain": "Test Method",
+    "year": 1988,
+    "status": "Current",
+    "latestVersion": "IS 12458:1988 (Reaffirmed)",
+    "amendments": [],
+    "scope": "Standard fire-resistance test procedure for door assemblies, used to assign fire-rating duration.",
+    "keywords": [
+      "fire test",
+      "fire rating",
+      "fire resistance test"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Test-method standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "FD04",
+    "number": "IS 3564",
+    "title": "Door Closers (Hydraulically Regulated) — Specification",
+    "category": "Fire Safety",
+    "domain": "Hardware",
+    "year": 2013,
+    "status": "Current",
+    "latestVersion": "IS 3564:2013",
+    "amendments": [],
+    "scope": "Performance requirements for door-closer hardware, relevant to fire-door assemblies requiring self-closing action.",
+    "keywords": [
+      "door hardware",
+      "door closer",
+      "fire door"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Hardware component standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "PM01",
+    "number": "IS 1520",
+    "title": "Horizontal Centrifugal Pumps for Clear, Cold & Slightly Contaminated Water — Specification",
+    "category": "Pumps & Machinery",
+    "domain": "Mechanical & Fluid Handling",
+    "year": 2007,
+    "status": "Current",
+    "latestVersion": "IS 1520:2007 (Reaffirmed)",
+    "amendments": [],
+    "scope": "Design, material and performance specification for horizontal centrifugal pumps used in water-supply applications.",
+    "keywords": [
+      "pump",
+      "centrifugal pump",
+      "water pump",
+      "industrial pump"
+    ],
+    "relations": {
+      "normative": [
+        "PM04"
+      ],
+      "test": [
+        "PM02"
+      ],
+      "safety": [
+        "PM03"
+      ]
+    },
+    "certification": {
+      "status": "Not Identified",
+      "scheme": "—",
+      "reason": "No mandatory BIS certification scheme currently identified for this general pump category in the demo dataset.",
+      "action": "Re-verify against the current QCO list for the specific pump type."
+    }
+  },
+  {
+    "id": "PM02",
+    "number": "IS 9137",
+    "title": "Code for Acceptance Test for Centrifugal, Mixed-Flow & Axial Pumps",
+    "category": "Pumps & Machinery",
+    "domain": "Test Method",
+    "year": 1978,
+    "status": "Current",
+    "latestVersion": "IS 9137:1978 (Reaffirmed)",
+    "amendments": [],
+    "scope": "Acceptance-test procedures for verifying pump performance parameters such as head, flow and efficiency.",
+    "keywords": [
+      "pump test",
+      "acceptance test",
+      "performance test"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "Test-method standard.",
+      "action": "—"
+    }
+  },
+  {
+    "id": "PM03",
+    "number": "IS 12615",
+    "title": "Line-Operated Three-Phase A.C. Induction Motors — Efficiency Classes & Performance",
+    "category": "Pumps & Machinery",
+    "domain": "Electrical Safety",
+    "year": 2018,
+    "status": "Current",
+    "latestVersion": "IS 12615:2018",
+    "amendments": [],
+    "scope": "Efficiency classification and performance requirements for induction motors, including those driving pump sets.",
+    "keywords": [
+      "motor",
+      "efficiency",
+      "pump motor",
+      "electric motor"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Possibly Applicable",
+      "scheme": "BIS Star Labelling",
+      "reason": "Electric motors may be covered under energy-efficiency labelling requirements.",
+      "action": "Verify current labelling-scheme applicability."
+    }
+  },
+  {
+    "id": "PM04",
+    "number": "IS/IEC 60034-1",
+    "title": "Rotating Electrical Machines — Rating & Performance",
+    "category": "Pumps & Machinery",
+    "domain": "Electrical Safety",
+    "year": 2012,
+    "status": "Current",
+    "latestVersion": "IS/IEC 60034-1:2012",
+    "amendments": [],
+    "scope": "General rating and performance requirements for rotating electrical machines used to drive pump sets.",
+    "keywords": [
+      "motor",
+      "rotating machine",
+      "electrical safety"
+    ],
+    "relations": {},
+    "certification": {
+      "status": "Not Applicable",
+      "scheme": "—",
+      "reason": "General electrical machine standard.",
+      "action": "—"
+    }
+  }
+]

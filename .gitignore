@@ -1,0 +1,20 @@
+node_modules/
+dist/
+
+# SQLite database — regenerated and seeded automatically on first boot
+data/
+
+# Secrets / local config — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+*.local

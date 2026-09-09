@@ -1,0 +1,35 @@
+{
+  "name": "is-match-ai",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n api,web -c yellow,cyan \"npm run server:watch\" \"npm run client\"",
+    "client": "vite",
+    "server": "node server/index.js",
+    "start": "node server/index.js",
+    "server:watch": "node --watch --watch-path=server --watch-path=shared server/index.js",
+    "seed": "node scripts/seed-db.mjs",
+    "smoke": "node scripts/smoke-render.mjs",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lucide-react": "^0.544.0",
+    "mammoth": "^1.10.0",
+    "multer": "^2.0.2",
+    "pdf-parse": "^1.1.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "recharts": "^3.1.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.13",
+    "@vitejs/plugin-react": "^5.0.2",
+    "concurrently": "^9.2.1",
+    "tailwindcss": "^4.1.13",
+    "vite": "^7.1.5"
+  }
+}
