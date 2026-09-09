@@ -113,6 +113,64 @@ function TierBadge({ tier }) {
   return <span className={`inline-block px-2 py-0.5 rounded text-[11px] font-semibold tracking-wide ${map[tier] || "bg-slate-400 text-white"}`}>{tier.toUpperCase()}</span>;
 }
 
+/**
+ * Which engine produced the current analysis. Worth showing plainly: when the
+ * AI path is unavailable the app keeps working, and saying so is more honest
+ * than letting a rule-based answer look like an AI one.
+ */
+const MODE_STYLE = {
+  ai: { label: "AI-assisted", cls: "bg-emerald-50 text-emerald-800 border-emerald-300", title: "Claude extracted the requirement facets and wrote the reasoning. Standards were selected by the matching engine." },
+  "rule-based": { label: "Rule-based", cls: "bg-sky-50 text-sky-800 border-sky-300", title: "The AI path was unavailable or disabled. The deterministic matching engine produced this result." },
+  offline: { label: "Offline", cls: "bg-amber-50 text-amber-800 border-amber-300", title: "The API could not be reached. Analysis ran locally in the browser against the bundled catalog." },
+};
+
+function ModeBadge({ mode, cached }) {
+  const style = MODE_STYLE[mode];
+  if (!style) return null;
+  return (
+    <span title={style.title} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-xs font-medium ${style.cls}`}>
+      <Sparkles size={11} /> {style.label}{cached ? " (cached)" : ""}
+    </span>
+  );
+}
+
+/** Non-blocking notice for the failures that used to be invisible. */
+function Toast({ toast, onDismiss }) {
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(onDismiss, 6000);
+    return () => clearTimeout(timer);
+  }, [toast, onDismiss]);
+
+  if (!toast) return null;
+  const warn = toast.kind === "warn";
+  return (
+    <div role="status" aria-live="polite" className="fixed bottom-5 right-5 z-50 max-w-sm">
+      <div className={`flex items-start gap-2 px-4 py-3 rounded shadow-lg border text-sm ${warn ? "bg-amber-50 border-amber-300 text-amber-900" : "bg-rose-50 border-rose-300 text-rose-900"}`}>
+        <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+        <span className="flex-1">{toast.message}</span>
+        <button onClick={onDismiss} aria-label="Dismiss" className="text-slate-400 hover:text-slate-700 leading-none">&times;</button>
+      </div>
+    </div>
+  );
+}
+
+/** Staged progress. A ten-second await with no feedback reads as a hung app. */
+function BusyOverlay({ stage }) {
+  if (!stage) return null;
+  return (
+    <div className="fixed inset-0 z-40 bg-slate-900/20 backdrop-blur-[1px] flex items-start justify-center pt-32">
+      <div className="bg-white border border-slate-300 rounded shadow-xl px-6 py-5 max-w-sm w-full">
+        <div className="flex items-center gap-3 mb-3">
+          <span className="inline-block w-4 h-4 border-2 border-slate-300 border-t-slate-900 rounded-full animate-spin" />
+          <span className="font-serif font-semibold text-sm">Analyzing</span>
+        </div>
+        <p className="text-sm text-slate-600">{stage}</p>
+      </div>
+    </div>
+  );
+}
+
 function RelevanceBar({ value }) {
   const color = value >= 90 ? "bg-emerald-600" : value >= 75 ? "bg-sky-600" : value >= 50 ? "bg-amber-500" : "bg-rose-500";
   const label = value >= 90 ? "Highly Applicable" : value >= 75 ? "Strongly Applicable" : value >= 50 ? "Potentially Applicable" : "Requires Expert Review";
@@ -205,12 +263,17 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
     const recs = initialSession?.analysis?.recommendations || [];
     return recs.find((r) => r.tier === "Primary")?.id || recs[0]?.id || null;
   });
+  const [busy, setBusy] = useState(null);
+  const [toast, setToast] = useState(null);
   const [dbReady, setDbReady] = useState(false);
   const [catalogTick, setCatalogTick] = useState(0);
   const [history, setHistory] = useState([]);
 
   const t = STR[lang];
   const go = (name, params = {}) => setPage({ name, ...params });
+
+  /** Surfaces the failures that used to be swallowed by empty catch blocks. */
+  const notify = (message, kind = "error") => setToast({ message, kind, id: Date.now() });
 
   const refreshHistory = () => {
     fetchAnalyses().then(setHistory).catch(() => {});
@@ -254,7 +317,9 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
     try {
       loadSession(await fetchAnalysis(id));
       go("recommendations");
-    } catch { /* row vanished; leave the current session in place */ }
+    } catch {
+      notify(`Could not reopen analysis #${id} — it may have been removed from the database.`);
+    }
   };
 
   const logAction = (action, standardId, time) => {
@@ -265,17 +330,47 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
     setDecisions((prev) => ({ ...prev, [id]: decision }));
     logAction(decision, id);
     if (analysisId) {
-      saveDecision(analysisId, id, decision).catch(() => {});
+      // A silent failure here is the worst kind: the officer sees the decision
+      // recorded on screen while nothing is being persisted for the audit trail.
+      saveDecision(analysisId, id, decision).catch(() =>
+        notify(`Decision on ${id} was not saved to the audit trail — the API rejected it.`),
+      );
+    } else {
+      notify("This analysis is not saved on the server, so decisions will not persist.", "warn");
     }
   };
 
+  /**
+   * The AI-assisted path takes about ten seconds on a fresh query, so the
+   * button cannot simply await in silence — that reads as a frozen app. The
+   * stage labels track what the server is actually doing.
+   */
+  const ANALYSIS_STAGES = [
+    { at: 0, label: "Reading the requirement…" },
+    { at: 1200, label: "Extracting product, material and quantity…" },
+    { at: 4000, label: `Matching against ${STANDARDS.length} standards…` },
+    { at: 6000, label: "Writing the reasoning for each standard…" },
+    { at: 11000, label: "Still working — finishing up…" },
+  ];
+
   const handleAnalyze = async (text) => {
-    if (!text || !text.trim()) return;
+    if (!text || !text.trim() || busy) return;
+
+    setBusy(ANALYSIS_STAGES[0].label);
+    const timers = ANALYSIS_STAGES.slice(1).map((s) =>
+      setTimeout(() => setBusy(s.label), s.at),
+    );
+
     try {
-      const result = await analyzeText(text);
-      applyResult(result);
-    } catch {
-      applyResult(runAnalysis(text));
+      applyResult(await analyzeText(text));
+    } catch (err) {
+      // The engine is bundled with the UI, so an unreachable API is a
+      // degraded mode rather than a failure — but the user should know.
+      notify("Could not reach the API. Analyzed locally with the rule-based engine.", "warn");
+      applyResult({ ...runAnalysis(text), mode: "offline" });
+    } finally {
+      timers.forEach(clearTimeout);
+      setBusy(null);
     }
   };
 
@@ -373,7 +468,8 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
             <span className="text-slate-800 font-medium">{NAV.find((n) => n.key === page.name)?.label || "Standard Detail"}</span>
           </div>
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-1.5 text-[11px] text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded">
+            {analysis?.mode && <ModeBadge mode={analysis.mode} cached={analysis.cached} />}
+            <div className="hidden lg:flex items-center gap-1.5 text-[11px] text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded">
               <Info size={12} />
               {dbReady ? "Live SQLite catalog" : "Local demo catalog"} — illustrative sample data, not verified against live BIS records
             </div>
@@ -392,10 +488,10 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
             <DashboardPage t={t} lang={lang} analysis={analysis} go={go} outdatedCount={outdatedCount} auditLog={auditLog} history={history} onOpenAnalysis={openAnalysis} dbReady={dbReady} />
           )}
           {page.name === "analyzer" && (
-            <AnalyzerPage t={t} queryText={queryText} setQueryText={setQueryText} onAnalyze={handleAnalyze} analysis={analysis} go={go} />
+            <AnalyzerPage t={t} queryText={queryText} setQueryText={setQueryText} onAnalyze={handleAnalyze} analysis={analysis} go={go} busy={busy} />
           )}
           {page.name === "tender" && (
-            <TenderPage tenderText={tenderText} setTenderText={setTenderText} onAnalyze={handleAnalyze} analysis={analysis} go={go} />
+            <TenderPage tenderText={tenderText} setTenderText={setTenderText} onAnalyze={handleAnalyze} analysis={analysis} go={go} busy={busy} onError={notify} />
           )}
           {page.name === "search" && (
             <SearchPage searchTerm={searchTerm} setSearchTerm={setSearchTerm} go={go} catalogTick={catalogTick} />
@@ -418,10 +514,13 @@ export default function App({ initialPage = { name: "dashboard" }, initialSessio
             <ExpertPage analysis={analysis} decisions={decisions} setDecision={setDecision} auditLog={auditLog} go={go} />
           )}
           {page.name === "adminDb" && (
-            <AdminDbPage onCatalogChange={() => { setDbReady(true); setCatalogTick((n) => n + 1); }} />
+            <AdminDbPage onCatalogChange={() => { setDbReady(true); setCatalogTick((n) => n + 1); }} onError={notify} />
           )}
         </main>
       </div>
+
+      <BusyOverlay stage={busy} />
+      <Toast toast={toast} onDismiss={() => setToast(null)} />
     </div>
   );
 }
@@ -543,7 +642,7 @@ function DashboardPage({ t, lang, analysis, go, outdatedCount, auditLog, history
    ANALYZER
    ========================================================================= */
 
-function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go }) {
+function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go, busy }) {
   return (
     <div className="max-w-4xl">
       <h1 className="font-serif text-xl font-semibold mb-1">Specification Analyzer</h1>
@@ -565,8 +664,15 @@ function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go }) {
           ))}
         </div>
         <div className="mt-4 flex items-center gap-3">
-          <button onClick={() => onAnalyze(queryText)} className="px-5 py-2 bg-slate-900 text-white rounded text-sm font-medium hover:bg-slate-800 flex items-center gap-2">
-            <Sparkles size={15} /> {t.analyze}
+          <button
+            onClick={() => onAnalyze(queryText)}
+            disabled={Boolean(busy) || !queryText.trim()}
+            className="px-5 py-2 bg-slate-900 text-white rounded text-sm font-medium hover:bg-slate-800 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            {busy
+              ? <span className="inline-block w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+              : <Sparkles size={15} />}
+            {busy ? "Analyzing…" : t.analyze}
           </button>
           {queryText.trim() && <span className="text-xs text-slate-500">Detected language: {detectLanguage(queryText)}</span>}
         </div>
@@ -599,7 +705,8 @@ function AnalyzerPage({ t, queryText, setQueryText, onAnalyze, analysis, go }) {
    TENDER UPLOAD & ANALYZER
    ========================================================================= */
 
-function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go }) {
+function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go, busy, onError }) {
+  const [extracting, setExtracting] = useState(null);
   const sample = "Draft tender clause: Supply and installation of solar powered LED street lights across rural road network. Fixtures shall be weather resistant and energy efficient. Reference: IS 16106:2013.";
   return (
     <div className="max-w-4xl">
@@ -628,18 +735,34 @@ function TenderPage({ tenderText, setTenderText, onAnalyze, analysis, go }) {
                 const file = e.target.files?.[0];
                 e.target.value = "";
                 if (!file) return;
+                setExtracting(file.name);
                 try {
                   const { text } = await extractUpload(file);
+                  if (!text?.trim()) {
+                    onError?.(`No text could be extracted from ${file.name}. A scanned PDF needs OCR, which this prototype does not do.`, "warn");
+                  }
                   setTenderText(text || "");
                 } catch (err) {
-                  setTenderText((prev) => prev || `Could not extract file: ${err.message}`);
+                  // Previously this wrote the error into the textarea, which then
+                  // got analyzed as if it were tender text.
+                  onError?.(`Could not read ${file.name}: ${err.message}`);
+                } finally {
+                  setExtracting(null);
                 }
               }}
             />
           </label>
+          {extracting && <span className="text-xs text-slate-500">Extracting text from {extracting}…</span>}
         </div>
-        <button onClick={() => onAnalyze(tenderText)} className="mt-4 px-5 py-2 bg-slate-900 text-white rounded text-sm font-medium hover:bg-slate-800 flex items-center gap-2">
-          <FileUp size={15} /> Analyze tender
+        <button
+          onClick={() => onAnalyze(tenderText)}
+          disabled={Boolean(busy) || !tenderText.trim()}
+          className="mt-4 px-5 py-2 bg-slate-900 text-white rounded text-sm font-medium hover:bg-slate-800 disabled:bg-slate-300 disabled:cursor-not-allowed flex items-center gap-2"
+        >
+          {busy
+            ? <span className="inline-block w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            : <FileUp size={15} />}
+          {busy ? "Analyzing…" : "Analyze tender"}
         </button>
       </Panel>
 
@@ -733,9 +856,28 @@ function RecommendationsPage({ analysis, decisions, setDecision, go }) {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-serif text-xl font-semibold mb-1">AI Recommendation Results</h1>
+      <div className="flex items-start justify-between gap-3 mb-1">
+        <h1 className="font-serif text-xl font-semibold">Recommendation Results</h1>
+        <ModeBadge mode={analysis.mode} cached={analysis.cached} />
+      </div>
       <p className="text-slate-500 text-sm mb-1">Product: <span className="font-medium text-slate-800">{analysis.product}</span></p>
-      <p className="text-slate-400 text-xs mb-5">Analyzed {analysis.timestamp} · Query language: {analysis.language}</p>
+      <p className="text-slate-400 text-xs mb-4">
+        Analyzed {analysis.timestamp} · Query language: {analysis.language}
+        {analysis.elapsedMs ? ` · ${(analysis.elapsedMs / 1000).toFixed(1)}s` : ""}
+        {analysis.costUsd ? ` · $${analysis.costUsd.toFixed(4)}` : ""}
+      </p>
+
+      {analysis.aiSummary && (
+        <div className="mb-5 bg-emerald-50/60 border border-emerald-200 rounded-md p-4">
+          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 mb-1.5">
+            <Sparkles size={13} /> AI summary
+          </div>
+          <p className="text-sm text-slate-700 leading-relaxed">{analysis.aiSummary}</p>
+          <p className="text-[11px] text-emerald-800/70 mt-2">
+            Standards below were selected by the matching engine, not by the model. The model explained the selection.
+          </p>
+        </div>
+      )}
 
       <div className="space-y-4">
         {analysis.recommendations.map((r) => {
@@ -1358,7 +1500,7 @@ function ExpertPage({ analysis, decisions, setDecision, auditLog, go }) {
    ADMIN — STANDARDS DATABASE
    ========================================================================= */
 
-function AdminDbPage({ onCatalogChange }) {
+function AdminDbPage({ onCatalogChange, onError }) {
   const [, bump] = useState(0);
   const refresh = (list) => {
     applyStandards(list);
@@ -1369,7 +1511,10 @@ function AdminDbPage({ onCatalogChange }) {
     try {
       await updateStandard(s.id, { status });
       refresh(STANDARDS.map((row) => (row.id === s.id ? { ...row, status } : row)));
-    } catch { /* keep existing row if API is down */ }
+    } catch (err) {
+      // Silently keeping the old row made a rejected write look like a success.
+      onError?.(`Could not update ${s.number}: ${err.message}`);
+    }
   };
   return (
     <div className="max-w-5xl">
