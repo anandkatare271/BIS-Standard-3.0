@@ -19,6 +19,7 @@ import {
   addAudit,
 } from "./db.js";
 import { runAnalysis } from "../shared/matching.js";
+import { analyzeWithAI, aiStatus, prewarm } from "./ai.js";
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 8 * 1024 * 1024 } });
@@ -53,6 +54,7 @@ app.get("/api/health", route((_req, res) => {
     service: "IS-Match AI",
     database: "sqlite",
     standards: countStandards(),
+    ai: aiStatus(),
   });
 }));
 
@@ -85,17 +87,22 @@ app.post("/api/seed", route((_req, res) => {
   res.json({ ok: true, standards: n });
 }));
 
-app.post("/api/analyze", route((req, res) => {
+app.post("/api/analyze", route(async (req, res) => {
   const text = (req.body?.text || "").toString().trim();
   if (!text) return res.status(400).json({ error: "text is required" });
   const catalog = listStandards();
   if (catalog.length === 0) {
     return res.status(503).json({ error: "Standards catalog is empty - run `npm run seed`" });
   }
-  const result = runAnalysis(text, catalog);
+
+  // The AI path is an enhancement, never a dependency. Any failure inside it
+  // returns null and this falls through to the engine the app shipped with.
+  const assisted = await analyzeWithAI(text, catalog, runAnalysis);
+  const result = assisted ?? { ...runAnalysis(text, catalog), mode: "rule-based" };
+
   const analysisId = saveAnalysis(result);
   const time = new Date().toLocaleTimeString("en-IN");
-  addAudit(analysisId, "Analysis run", null, time);
+  addAudit(analysisId, result.mode === "ai" ? "AI-assisted analysis run" : "Analysis run", null, time);
   res.json({ analysisId, ...result });
 }));
 
@@ -181,4 +188,11 @@ app.use((err, _req, res, _next) => {
 const port = Number(process.env.PORT || 3001);
 app.listen(port, () => {
   console.log(`IS-Match AI API listening on http://localhost:${port}`);
+  const ai = aiStatus();
+  console.log(
+    ai.configured
+      ? `AI path: ${ai.reason} (${ai.model}, ${ai.timeoutMs}ms timeout)`
+      : `AI path: ${ai.reason} - analysis will use the rule-based engine`,
+  );
+  if (ai.configured && catalogSize > 0) prewarm(listStandards());
 });
